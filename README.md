@@ -1,22 +1,16 @@
 # Taski To-Do App
 
-Taski To-Do é um aplicativo de gerenciamento de tarefas simples e eficiente, desenvolvido em Flutter. Ele permite que os usuários criem, editem, marquem como concluídas e excluam tarefas. O aplicativo utiliza o **Hive** para armazenamento local, o **MobX** para gerenciamento de estado e o **Modular** para gerenciamento de rotas e injeção de dependências.
+Taski To-Do is a simple task management app developed in Flutter. It allows users to create, edit, mark as completed, and delete tasks. The app uses **Hive** for local storage, **MobX** for state management, and **Modular** for route management and dependency injection.
 
-## Pré-requisitos
-
-Antes de começar, certifique-se de que você tem os seguintes itens instalados:
-
-- **Flutter SDK**: 3.x ou superior
-- **Dart SDK**: 2.19 ou superior
-- Dependências adicionais conforme listado no arquivo `pubspec.yaml`
-
----
-
-## Como Executar o Projeto
+## How to Run the Project
 
 
 ```bash
-git clone https://github.com/seu-usuario/taski-to-do.git
+git clone https://github.com/brunonortlieb/taski_to_do
+```
+
+```bash
+cd taski_to_do
 ```
 
 ```bash
@@ -29,15 +23,7 @@ flutter run
 
 ---
 
-## Como Executar os Testes
-
-```bash
-flutter test
-```
-
----
-
-## Estrutura do Projeto
+## Project Structure
 
 ```
 lib/
@@ -64,20 +50,20 @@ lib/
 
 ---
 
-##  Dependências Principais
+##  Main Dependencies
 
-- **Flutter Modular**: Para injeção de dependências e gerenciamento de rotas.
-- **MobX**: Para gerenciamento de estado reativo.
-- **Hive**: Para armazenamento local de dados.
-- **Mocktail**: Para testes unitários e de widget.
+- **Flutter Modular**: For dependency injection and route management.
+- **MobX**: For reactive state management.
+- **Hive**: For local data storage.
+- **Mocktail**: For unit and widget testing.
 
-Para ver todas as dependências, consulte o arquivo `pubspec.yaml`.
+For a full list of dependencies, check the `pubspec.yaml` file.
 
 ---
 
-##  Contato
+##  Contact
 
-- **Nome**: Bruno Nunes Ortlien
+- **Name**: Bruno Nunes Ortlieb
 - **Email**: bruno.10nuness@gmail.com
 - **GitHub**: https://github.com/brunonortlieb
 

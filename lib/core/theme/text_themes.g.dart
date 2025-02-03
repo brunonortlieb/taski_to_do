@@ -31,17 +31,9 @@ TextTheme textTheme = GoogleFonts.urbanistTextTheme().copyWith(
         color: colorScheme.onSurfaceVariant,
         height: 1.285,
       ),
-  displayMedium: TextStyle(color: Colors.amber, fontSize: 25),
-  displayLarge: TextStyle(color: Colors.amber, fontSize: 25),
-  displaySmall: TextStyle(color: Colors.amber, fontSize: 25),
-  headlineLarge: TextStyle(color: Colors.redAccent, fontSize: 25),
-  headlineMedium: TextStyle(color: Colors.redAccent, fontSize: 25),
-  headlineSmall: TextStyle(color: Colors.redAccent, fontSize: 25),
   labelLarge: GoogleFonts.urbanistTextTheme().titleSmall?.copyWith(
         fontSize: 18,
         fontWeight: FontWeight.w600,
         height: 1.2,
       ),
-  labelMedium: TextStyle(color: Colors.lightGreen, fontSize: 28),
-  labelSmall: TextStyle(color: Colors.lightGreen, fontSize: 28),
 );

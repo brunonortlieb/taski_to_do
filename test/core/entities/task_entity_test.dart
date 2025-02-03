@@ -1,14 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:taski_to_do/core/entities/task_entity.dart';
 
+import '../../fixtures/entities/task_entity_fixture.dart';
+
 void main() {
   group('TaskEntity', () {
-    final taskEntity = TaskEntity(
-      id: '1',
-      isDone: false,
-      title: 'title',
-      content: 'content',
-    );
+    final taskEntity = TaskEntityFixture.createDefault();
 
     test('props should contain id, isDone, title, and content', () {
       expect(taskEntity.props, [taskEntity.id, taskEntity.isDone, taskEntity.title, taskEntity.content]);

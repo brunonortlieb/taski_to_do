@@ -2,10 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:taski_to_do/core/entities/task_entity.dart';
 import 'package:taski_to_do/core/failures/failure.dart';
 import 'package:taski_to_do/data/local/models/task_model.dart';
 import 'package:taski_to_do/data/local/repositories/local_task_repository.dart';
+
+import '../../../fixtures/entities/task_entity_fixture.dart';
+import '../../../fixtures/models/task_model_fixture.dart';
 
 class MockBox<T> extends Mock implements Box<T> {}
 
@@ -25,13 +27,8 @@ void main() {
   });
 
   group('LocalTaskRepository', () {
-    final taskEntity = TaskEntity(
-      id: '1',
-      isDone: false,
-      title: 'title',
-      content: 'content',
-    );
-    final taskModel = TaskModel.fromEntity(taskEntity);
+    final taskEntity = TaskEntityFixture.createDefault();
+    final taskModel = TaskModelFixture.createDefault();
 
     test('putTask - success', () async {
       when(() => mockBox.put(any(), any())).thenAnswer((_) async => {});
@@ -41,9 +38,7 @@ void main() {
       expect(result, isA<Right>());
       verify(() => mockBox.put(
             taskEntity.id,
-            any(
-                that: predicate<TaskModel>((model) => model.toEntity() == taskEntity // Compara TaskModel convertido para TaskEntity
-                    )),
+            any(that: predicate<TaskModel>((model) => model.toEntity() == taskEntity)),
           )).called(1);
     });
 

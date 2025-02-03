@@ -33,6 +33,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             Row(
               children: [
                 IconButton(
+                  key: const Key('isDnoe'),
                   onPressed: () => widget.onChanged(widget.data.copyWith(isDone: !widget.data.isDone)),
                   icon: ImageIcon(AssetImage(widget.data.isDone ? ImageAssets.checkIcon : ImageAssets.uncheckedIcon)),
                 ),
@@ -46,6 +47,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                 const SizedBox(width: 8),
                 if (widget.data.isDone)
                   IconButton(
+                    key: const Key('delete'),
                     onPressed: () => widget.onDelete(widget.data),
                     icon: ImageIcon(
                       const AssetImage(ImageAssets.deleteIcon),
@@ -54,6 +56,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                   )
                 else if (isCollapsed)
                   IconButton(
+                    key: const Key('more'),
                     onPressed: () => setState(() => isCollapsed = false),
                     icon: const ImageIcon(AssetImage(ImageAssets.dotsIcon)),
                   ),

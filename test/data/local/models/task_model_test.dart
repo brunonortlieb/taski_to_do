@@ -1,22 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:taski_to_do/core/entities/task_entity.dart';
 import 'package:taski_to_do/data/local/models/task_model.dart';
+
+import '../../../fixtures/entities/task_entity_fixture.dart';
+import '../../../fixtures/models/task_model_fixture.dart';
 
 void main() {
   group('TaskModel', () {
-    final taskEntity = TaskEntity(
-      id: '1',
-      isDone: false,
-      title: 'title',
-      content: 'content',
-    );
-
-    final taskModel = TaskModel(
-      id: '1',
-      isDone: false,
-      title: 'title',
-      content: 'content',
-    );
+    final taskEntity = TaskEntityFixture.createDefault();
+    final taskModel = TaskModelFixture.createDefault();
 
     test('fromEntity - should convert TaskEntity to TaskModel correctly', () {
       final result = TaskModel.fromEntity(taskEntity);

@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart' as mocktail;
 import 'package:mobx/mobx.dart';
-import 'package:taski_to_do/core/entities/task_entity.dart';
 import 'package:taski_to_do/core/failures/failure.dart';
 import 'package:taski_to_do/data/local/repositories/local_task_repository.dart';
 import 'package:taski_to_do/modules/home/stores/home_store.dart';
+
+import '../../../fixtures/entities/task_entity_fixture.dart';
 
 class MockLocalTaskRepository extends mocktail.Mock implements LocalTaskRepository {}
 
 class MockBuildContext extends mocktail.Mock implements BuildContext {}
 
 class FakeFailure extends mocktail.Fake implements Failure {}
-
-class FakeTaskEntity extends mocktail.Fake implements TaskEntity {}
 
 void main() {
   late HomeStore homeStore;
@@ -23,7 +22,7 @@ void main() {
 
   setUpAll(() {
     mocktail.registerFallbackValue(FakeFailure());
-    mocktail.registerFallbackValue(FakeTaskEntity());
+    mocktail.registerFallbackValue(TaskEntityFixture.createFake());
   });
 
   setUp(() {
@@ -34,12 +33,7 @@ void main() {
   });
 
   group('HomeStore', () {
-    final taskEntity = TaskEntity(
-      id: '1',
-      isDone: false,
-      title: 'title',
-      content: 'content',
-    );
+    final taskEntity = TaskEntityFixture.createDefault();
 
     test('init should load tasks and update lists', () async {
       mocktail.when(() => mockRepository.getTasks()).thenAnswer((_) async => Right([taskEntity]));

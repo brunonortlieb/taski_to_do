@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:taski_to_do/core/di/injector.dart';
 import 'package:taski_to_do/presentation/tasks/controllers/home_store.dart';
 import 'package:taski_to_do/presentation/tasks/pages/home_page.dart';
-import 'package:taski_to_do/presentation/tasks/pages/todo_page.dart';
 import 'package:taski_to_do/presentation/tasks/pages/search_page.dart';
+import 'package:taski_to_do/presentation/tasks/pages/todo_page.dart';
 import 'package:taski_to_do/presentation/tasks/widgets/create_task_widget.dart';
 
 import '../../../../testing/mocks.dart';
@@ -17,6 +19,8 @@ void main() {
     mockStore = MockHomeStore();
 
     injector.replaceInstance<HomeStore>(mockStore);
+
+    enableWarnWhenNoObservables = false;
 
     when(() => mockStore.currentIndex).thenReturn(0);
     when(() => mockStore.username).thenReturn('John');

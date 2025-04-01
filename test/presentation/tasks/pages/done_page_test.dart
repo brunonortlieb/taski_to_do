@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:result_dart/result_dart.dart';
@@ -18,6 +19,8 @@ void main() {
     mockStore = MockHomeStore();
 
     injector.replaceInstance<HomeStore>(mockStore);
+
+    enableWarnWhenNoObservables = false;
   });
 
   Future<void> loadScreen(WidgetTester tester) async {

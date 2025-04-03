@@ -1,0 +1,161 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  flutter-ci:
+    name: CI - Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.27.3
+          cache: true
+
+      - name: Clean Flutter cache
+        run: flutter clean
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run static analysis (lint)
+        run: flutter analyze
+
+      - name: Check code formatting
+        run: |
+          flutter format --dry-run --set-exit-if-changed lib/
+          flutter format --dry-run --set-exit-if-changed test/
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Upload test coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage/lcov.info
+          flags: unittests
+          name: flutter-codecov
+          fail_ci_if_error: true
+
+  flutter-cd:
+    name: CD - Build & Artifacts (${{ matrix.platform }})
+    needs: flutter-ci
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [android, ios, web, windows, macos, linux]
+        include:
+          - platform: android
+            os: ubuntu-latest
+          - platform: ios
+            os: macos-latest
+          - platform: web
+            os: ubuntu-latest
+          - platform: windows
+            os: windows-latest
+          - platform: macos
+            os: macos-latest
+          - platform: linux
+            os: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.27.3
+          cache: true
+
+      - name: Clean Flutter cache
+        run: flutter clean
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build project (${{ matrix.platform }})
+        run: |
+          echo "Starting build for ${{ matrix.platform }}..."
+          case "${{ matrix.platform }}" in
+            android)
+              flutter build apk --release
+              flutter build appbundle --release
+              ;;
+            ios)
+              flutter build ios --release --no-codesign
+              ;;
+            web)
+              flutter build web
+              ;;
+            windows)
+              flutter build windows
+              ;;
+            macos)
+              flutter build macos
+              ;;
+            linux)
+              flutter build linux
+              ;;
+            *)
+              echo "Unknown platform: ${{ matrix.platform }}"
+              exit 1
+              ;;
+          esac
+        shell: bash
+
+      - name: Upload Android artifacts
+        if: matrix.platform == 'android'
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+
+      - name: Upload iOS artifacts
+        if: matrix.platform == 'ios'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build
+          path: build/ios/archive/
+
+      - name: Upload Web artifacts
+        if: matrix.platform == 'web'
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web/
+
+      - name: Upload Windows artifacts
+        if: matrix.platform == 'windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: build/windows/
+
+      - name: Upload macOS artifacts
+        if: matrix.platform == 'macos'
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: build/macos/
+
+      - name: Upload Linux artifacts
+        if: matrix.platform == 'linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: build/linux/

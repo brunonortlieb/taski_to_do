@@ -8,8 +8,9 @@ class TaskLocalDatasourceImpl extends TaskDatasource {
   final HiveInterface _hive;
 
   TaskLocalDatasourceImpl(this._hive) {
-    if (!Hive.isAdapterRegistered(TaskModelAdapter().typeId))
+    if (!Hive.isAdapterRegistered(TaskModelAdapter().typeId)) {
       Hive.registerAdapter(TaskModelAdapter());
+    }
   }
 
   @override

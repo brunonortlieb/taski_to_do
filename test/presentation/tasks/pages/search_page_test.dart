@@ -29,11 +29,13 @@ void main() {
   });
 
   Future<void> loadScreen(WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: SearchPage())));
+    await tester
+        .pumpWidget(const MaterialApp(home: Scaffold(body: SearchPage())));
   }
 
   group('SearchPage', () {
-    testWidgets('should display an empty state when filteredTasks is empty', (WidgetTester tester) async {
+    testWidgets('should display an empty state when filteredTasks is empty',
+        (WidgetTester tester) async {
       when(() => mockStore.filteredTasks).thenReturn([]);
 
       await loadScreen(tester);
@@ -42,7 +44,8 @@ void main() {
       expect(find.text('Search...'), findsOneWidget);
     });
 
-    testWidgets('should display tasks when filteredTasks is not empty', (WidgetTester tester) async {
+    testWidgets('should display tasks when filteredTasks is not empty',
+        (WidgetTester tester) async {
       when(() => mockStore.filteredTasks).thenReturn([kTaskEntity]);
 
       await loadScreen(tester);
@@ -51,7 +54,8 @@ void main() {
       expect(find.text('title'), findsOneWidget);
     });
 
-    testWidgets('should call onSearch when text is entered in the search field', (WidgetTester tester) async {
+    testWidgets('should call onSearch when text is entered in the search field',
+        (WidgetTester tester) async {
       await loadScreen(tester);
 
       await tester.enterText(find.byType(TextField), 'test');
@@ -60,7 +64,8 @@ void main() {
       verify(() => mockStore.onSearch('test')).called(1);
     });
 
-    testWidgets('should clear the search field when clear button is pressed', (WidgetTester tester) async {
+    testWidgets('should clear the search field when clear button is pressed',
+        (WidgetTester tester) async {
       await loadScreen(tester);
 
       await tester.enterText(find.byType(TextField), 'test');
@@ -73,7 +78,8 @@ void main() {
       verify(() => mockStore.onSearch('')).called(2);
     });
 
-    testWidgets('should show bottom sheet when create button is pressed', (WidgetTester tester) async {
+    testWidgets('should show bottom sheet when create button is pressed',
+        (WidgetTester tester) async {
       when(() => mockStore.todoTasks).thenReturn([]);
 
       await loadScreen(tester);

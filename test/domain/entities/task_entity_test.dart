@@ -42,7 +42,8 @@ void main() {
       expect(result.content, equals(newContent));
     });
 
-    test('Should create a copy with only some values updated using copyWith', () {
+    test('Should create a copy with only some values updated using copyWith',
+        () {
       const String newTitle = 'newTitle';
 
       final result = kTaskEntity.copyWith(title: newTitle);

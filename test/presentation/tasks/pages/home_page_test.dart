@@ -36,7 +36,9 @@ void main() {
   }
 
   group('HomePage', () {
-    testWidgets('should display the AppBar with correct title and user information', (WidgetTester tester) async {
+    testWidgets(
+        'should display the AppBar with correct title and user information',
+        (WidgetTester tester) async {
       await loadScreen(tester);
 
       expect(find.text('Taski'), findsOneWidget);
@@ -44,7 +46,8 @@ void main() {
       expect(find.byType(CircleAvatar), findsOneWidget);
     });
 
-    testWidgets('should display the correct page based on currentIndex', (WidgetTester tester) async {
+    testWidgets('should display the correct page based on currentIndex',
+        (WidgetTester tester) async {
       when(() => mockStore.currentIndex).thenReturn(0);
 
       await loadScreen(tester);
@@ -58,7 +61,9 @@ void main() {
       expect(find.byType(SearchPage), findsOneWidget);
     });
 
-    testWidgets('should call setCurrentIndex when tapping on BottomNavigationBar items', (WidgetTester tester) async {
+    testWidgets(
+        'should call setCurrentIndex when tapping on BottomNavigationBar items',
+        (WidgetTester tester) async {
       when(() => mockStore.setCurrentIndex(any())).thenAnswer((_) {});
 
       await loadScreen(tester);
@@ -69,7 +74,8 @@ void main() {
       verify(() => mockStore.setCurrentIndex(0)).called(1);
     });
 
-    testWidgets('should show bottom sheet when tapping on Create button', (WidgetTester tester) async {
+    testWidgets('should show bottom sheet when tapping on Create button',
+        (WidgetTester tester) async {
       await loadScreen(tester);
 
       await tester.tap(find.byKey(const Key('Create')));

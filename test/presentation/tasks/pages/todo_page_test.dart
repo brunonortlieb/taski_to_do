@@ -29,24 +29,30 @@ void main() {
     when(() => mockStore.username).thenReturn('John');
     when(() => mockStore.tasksTodo).thenReturn('tasksTodo');
     when(() => mockStore.todoTasks).thenReturn([kTaskEntity]);
-    when(() => mockStore.onCreateTask(any())).thenAnswer((_) async => Success(kTaskEntity));
-    when(() => mockStore.onChangeTask(any())).thenAnswer((_) async => Success(kTaskEntity));
-    when(() => mockStore.onDeleteTask(any())).thenAnswer((_) async => const Success(unit));
+    when(() => mockStore.onCreateTask(any()))
+        .thenAnswer((_) async => Success(kTaskEntity));
+    when(() => mockStore.onChangeTask(any()))
+        .thenAnswer((_) async => Success(kTaskEntity));
+    when(() => mockStore.onDeleteTask(any()))
+        .thenAnswer((_) async => const Success(unit));
   });
 
   Future<void> loadScreen(WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: TodoPage())));
+    await tester
+        .pumpWidget(const MaterialApp(home: Scaffold(body: TodoPage())));
   }
 
   group('TodoPage', () {
-    testWidgets('should display welcome message and tasks count', (WidgetTester tester) async {
+    testWidgets('should display welcome message and tasks count',
+        (WidgetTester tester) async {
       await loadScreen(tester);
 
       expect(find.byKey(const Key('welcomeMessage')), findsOneWidget);
       expect(find.text('tasksTodo'), findsOneWidget);
     });
 
-    testWidgets('should display an empty state when todoTasks is empty', (WidgetTester tester) async {
+    testWidgets('should display an empty state when todoTasks is empty',
+        (WidgetTester tester) async {
       when(() => mockStore.todoTasks).thenReturn([]);
 
       await loadScreen(tester);
@@ -54,14 +60,16 @@ void main() {
       expect(find.byType(EmptyListWidget), findsOneWidget);
     });
 
-    testWidgets('should display tasks when todoTasks is not empty', (WidgetTester tester) async {
+    testWidgets('should display tasks when todoTasks is not empty',
+        (WidgetTester tester) async {
       await loadScreen(tester);
 
       expect(find.byType(TaskWidget), findsOneWidget);
       expect(find.text('title'), findsOneWidget);
     });
 
-    testWidgets('should show bottom sheet when create button is pressed', (WidgetTester tester) async {
+    testWidgets('should show bottom sheet when create button is pressed',
+        (WidgetTester tester) async {
       when(() => mockStore.todoTasks).thenReturn([]);
 
       await loadScreen(tester);

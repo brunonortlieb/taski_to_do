@@ -48,7 +48,7 @@ class _HomePageBlocState extends State<HomePageBloc> {
               ),
               const SizedBox(width: 8),
               const Expanded(child: Text('Taski')),
-              const Text('Jhon'), //TODO
+              const Text('Jhon'),
               const SizedBox(width: 14),
               CircleAvatar(radius: 21, child: Image.asset(ImageAssets.avatar)),
             ],

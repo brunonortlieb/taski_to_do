@@ -19,7 +19,8 @@ void main() {
 
   group('HomeStore', () {
     test('should initialize with tasks from the repository', () async {
-      when(() => mockRepository.getAllTasks()).thenAnswer((_) async => Success([kTaskEntity]));
+      when(() => mockRepository.getAllTasks())
+          .thenAnswer((_) async => Success([kTaskEntity]));
 
       await store.init();
 
@@ -31,7 +32,8 @@ void main() {
     });
 
     test('should handle failure when initializing tasks', () async {
-      when(() => mockRepository.getAllTasks()).thenAnswer((_) async => Failure(Exception()));
+      when(() => mockRepository.getAllTasks())
+          .thenAnswer((_) async => Failure(Exception()));
 
       await store.init();
 
@@ -59,7 +61,8 @@ void main() {
     test('should delete all done tasks', () async {
       final task = kTaskEntity.copyWith(id: '11');
       store.allTasks.addAll([task, kTaskEntity]);
-      when(() => mockRepository.deleteAllTasks(any())).thenAnswer((_) async => const Success(unit));
+      when(() => mockRepository.deleteAllTasks(any()))
+          .thenAnswer((_) async => const Success(unit));
 
       await store.onDeleteAllTasks([task]);
 
@@ -70,7 +73,8 @@ void main() {
 
     test('should toggle task status and update lists', () async {
       store.allTasks.addAll([kTaskEntity]);
-      when(() => mockRepository.updateTask(any())).thenAnswer((_) async => Success(kTaskEntity.copyWith(isDone: true)));
+      when(() => mockRepository.updateTask(any()))
+          .thenAnswer((_) async => Success(kTaskEntity.copyWith(isDone: true)));
 
       await store.onChangeTask(kTaskEntity.copyWith(isDone: true));
 
@@ -82,7 +86,8 @@ void main() {
 
     test('should delete a task and update lists', () async {
       store.allTasks.addAll([kTaskEntity]);
-      when(() => mockRepository.deleteTask(any())).thenAnswer((_) async => const Success(unit));
+      when(() => mockRepository.deleteTask(any()))
+          .thenAnswer((_) async => const Success(unit));
 
       final result = await store.onDeleteTask(kTaskEntity);
 
@@ -94,7 +99,8 @@ void main() {
     });
 
     test('should create a new task and update lists', () async {
-      when(() => mockRepository.addTask(any())).thenAnswer((_) async => Success(kTaskEntity));
+      when(() => mockRepository.addTask(any()))
+          .thenAnswer((_) async => Success(kTaskEntity));
 
       final result = await store.onCreateTask(kTaskEntity);
 

@@ -40,13 +40,10 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
 
-      - name: Upload test coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage report
+        uses: VeryGoodOpenSource/very_good_coverage@v3
         with:
-          files: coverage/lcov.info
-          flags: unittests
-          name: flutter-codecov
-          fail_ci_if_error: true
+          path: coverage/lcov.info
 
   flutter-cd:
     name: CD - Build & Artifacts (${{ matrix.platform }})

@@ -19,7 +19,9 @@ class TodoPageBloc extends StatelessWidget {
       bloc: bloc,
       builder: (context, state) {
         if (state is TaskLoadedState) {
-          final tasksTodo = state.todoTasks.isEmpty ? 'Create tasks to achieve more.' : 'You’ve got ${state.todoTasks.length} tasks to do.';
+          final tasksTodo = state.todoTasks.isEmpty
+              ? 'Create tasks to achieve more.'
+              : 'You’ve got ${state.todoTasks.length} tasks to do.';
 
           return Column(
             children: [
@@ -32,9 +34,15 @@ class TodoPageBloc extends StatelessWidget {
                       key: const Key('welcomeMessage'),
                       text: TextSpan(
                         children: [
-                          TextSpan(text: 'Welcome, ', style: context.textTheme.titleLarge),
-                          TextSpan(text: 'Jhon', style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.primary)),
-                          TextSpan(text: '.', style: context.textTheme.titleLarge),
+                          TextSpan(
+                              text: 'Welcome, ',
+                              style: context.textTheme.titleLarge),
+                          TextSpan(
+                              text: 'Jhon',
+                              style: context.textTheme.titleLarge?.copyWith(
+                                  color: context.colorScheme.primary)),
+                          TextSpan(
+                              text: '.', style: context.textTheme.titleLarge),
                         ],
                       ),
                     ),
@@ -49,7 +57,8 @@ class TodoPageBloc extends StatelessWidget {
                         onCreate: () => showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
-                          builder: (_) => CreateTaskWidget((task) => bloc.add(AddTaskEvent(task))),
+                          builder: (_) => CreateTaskWidget(
+                              (task) => bloc.add(AddTaskEvent(task))),
                         ),
                       )
                     : ListView.separated(

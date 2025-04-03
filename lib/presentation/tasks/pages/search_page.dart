@@ -39,10 +39,12 @@ class _SearchPageState extends State<SearchPage> {
           padding: const EdgeInsets.fromLTRB(26, 8, 26, 32),
           child: TextField(
             controller: searchController,
-            style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.onSurface),
+            style: context.textTheme.bodyMedium
+                ?.copyWith(color: context.colorScheme.onSurface),
             decoration: InputDecoration(
               hintText: 'Search...',
-              prefixIcon: const ImageIcon(AssetImage(ImageAssets.searchAltIcon)),
+              prefixIcon:
+                  const ImageIcon(AssetImage(ImageAssets.searchAltIcon)),
               suffixIcon: IconButton(
                 key: const Key('clearSearchButton'),
                 onPressed: searchController.clear,
@@ -61,7 +63,8 @@ class _SearchPageState extends State<SearchPage> {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               context: context,
-                              builder: (_) => CreateTaskWidget(store.onCreateTask),
+                              builder: (_) =>
+                                  CreateTaskWidget(store.onCreateTask),
                             );
                           },
                   )

@@ -23,7 +23,8 @@ class _SearchPageBlocState extends State<SearchPageBloc> {
   @override
   void initState() {
     super.initState();
-    searchController.addListener(() => bloc.add(SearchTasksEvent(searchController.text)));
+    searchController
+        .addListener(() => bloc.add(SearchTasksEvent(searchController.text)));
   }
 
   @override
@@ -44,10 +45,12 @@ class _SearchPageBlocState extends State<SearchPageBloc> {
                 padding: const EdgeInsets.fromLTRB(26, 8, 26, 32),
                 child: TextField(
                   controller: searchController,
-                  style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.onSurface),
+                  style: context.textTheme.bodyMedium
+                      ?.copyWith(color: context.colorScheme.onSurface),
                   decoration: InputDecoration(
                     hintText: 'Search...',
-                    prefixIcon: const ImageIcon(AssetImage(ImageAssets.searchAltIcon)),
+                    prefixIcon:
+                        const ImageIcon(AssetImage(ImageAssets.searchAltIcon)),
                     suffixIcon: IconButton(
                       key: const Key('clearSearchButton'),
                       onPressed: searchController.clear,
@@ -65,7 +68,8 @@ class _SearchPageBlocState extends State<SearchPageBloc> {
                                 showModalBottomSheet(
                                   isScrollControlled: true,
                                   context: context,
-                                  builder: (_) => CreateTaskWidget((task) => bloc.add(AddTaskEvent(task))),
+                                  builder: (_) => CreateTaskWidget(
+                                      (task) => bloc.add(AddTaskEvent(task))),
                                 );
                               },
                       )

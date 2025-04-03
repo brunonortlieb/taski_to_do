@@ -31,7 +31,8 @@ class _DonePageState extends State<DonePage> {
                 if (store.doneTasks.isNotEmpty)
                   TextButton(
                     onPressed: () => store.onDeleteAllTasks(store.doneTasks),
-                    child: Text('Delete all', style: TextStyle(color: context.colorScheme.error)),
+                    child: Text('Delete all',
+                        style: TextStyle(color: context.colorScheme.error)),
                   ),
               ],
             ),

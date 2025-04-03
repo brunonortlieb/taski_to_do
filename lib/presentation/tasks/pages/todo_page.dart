@@ -32,8 +32,13 @@ class _TodoPageState extends State<TodoPage> {
                   key: const Key('welcomeMessage'),
                   text: TextSpan(
                     children: [
-                      TextSpan(text: 'Welcome, ', style: context.textTheme.titleLarge),
-                      TextSpan(text: store.username, style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.primary)),
+                      TextSpan(
+                          text: 'Welcome, ',
+                          style: context.textTheme.titleLarge),
+                      TextSpan(
+                          text: store.username,
+                          style: context.textTheme.titleLarge
+                              ?.copyWith(color: context.colorScheme.primary)),
                       TextSpan(text: '.', style: context.textTheme.titleLarge),
                     ],
                   ),

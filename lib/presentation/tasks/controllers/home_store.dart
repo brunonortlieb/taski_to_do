@@ -20,13 +20,17 @@ abstract class HomePageBase with Store {
   @observable
   ObservableList<TaskEntity> allTasks = ObservableList.of([]);
   @computed
-  List<TaskEntity> get filteredTasks => allTasks.where((e) => e.title.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+  List<TaskEntity> get filteredTasks => allTasks
+      .where((e) => e.title.toLowerCase().contains(searchQuery.toLowerCase()))
+      .toList();
   @computed
   List<TaskEntity> get doneTasks => allTasks.where((e) => e.isDone).toList();
   @computed
   List<TaskEntity> get todoTasks => allTasks.where((e) => !e.isDone).toList();
   @computed
-  String get tasksTodo => todoTasks.isEmpty ? 'Create tasks to achieve more.' : 'You’ve got ${todoTasks.length} tasks to do.';
+  String get tasksTodo => todoTasks.isEmpty
+      ? 'Create tasks to achieve more.'
+      : 'You’ve got ${todoTasks.length} tasks to do.';
 
   String get username => 'John';
 

@@ -18,7 +18,8 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
     on<DeleteAllTaskEvent>(_deleteAllTask);
   }
 
-  Future<void> _loadTasksEvent(LoadTasksEvent event, Emitter<TaskState> emit) async {
+  Future<void> _loadTasksEvent(
+      LoadTasksEvent event, Emitter<TaskState> emit) async {
     final result = await _repository.getAllTasks();
     result.fold(
       (tasks) => emit(TaskLoadedState(allTasks: tasks, filteredTasks: tasks)),
@@ -35,11 +36,13 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
       final taskList = List<TaskEntity>.from(currentState.allTasks);
       taskList.add(newTask);
 
-      emit(TaskLoadedState(allTasks: taskList, filteredTasks: currentState.filteredTasks));
+      emit(TaskLoadedState(
+          allTasks: taskList, filteredTasks: currentState.filteredTasks));
     }, (failure) => emit(TaskErrorState(failure.toString())));
   }
 
-  Future<void> _updateTask(UpdateTaskEvent event, Emitter<TaskState> emit) async {
+  Future<void> _updateTask(
+      UpdateTaskEvent event, Emitter<TaskState> emit) async {
     if (state is! TaskLoadedState) return;
     final currentState = state as TaskLoadedState;
 
@@ -49,11 +52,13 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
       final index = taskList.indexWhere((e) => e.id == updatedTask.id);
       taskList[index] = updatedTask;
 
-      emit(TaskLoadedState(allTasks: taskList, filteredTasks: currentState.filteredTasks));
+      emit(TaskLoadedState(
+          allTasks: taskList, filteredTasks: currentState.filteredTasks));
     }, (failure) => emit(TaskErrorState(failure.toString())));
   }
 
-  Future<void> _deleteTask(DeleteTaskEvent event, Emitter<TaskState> emit) async {
+  Future<void> _deleteTask(
+      DeleteTaskEvent event, Emitter<TaskState> emit) async {
     if (state is! TaskLoadedState) return;
     final currentState = state as TaskLoadedState;
 
@@ -72,14 +77,17 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
     if (state is! TaskLoadedState) return;
     final currentState = state as TaskLoadedState;
 
-    final filteredTasks = currentState.allTasks.where((e) => e.title.toLowerCase().contains(event.query.toLowerCase())).toList();
+    final filteredTasks = currentState.allTasks
+        .where((e) => e.title.toLowerCase().contains(event.query.toLowerCase()))
+        .toList();
     emit(TaskLoadedState(
       allTasks: List.from(currentState.allTasks),
       filteredTasks: List.from(filteredTasks),
     ));
   }
 
-  Future<void> _deleteAllTask(DeleteAllTaskEvent event, Emitter<TaskState> emit) async {
+  Future<void> _deleteAllTask(
+      DeleteAllTaskEvent event, Emitter<TaskState> emit) async {
     if (state is! TaskLoadedState) return;
     final currentState = state as TaskLoadedState;
 

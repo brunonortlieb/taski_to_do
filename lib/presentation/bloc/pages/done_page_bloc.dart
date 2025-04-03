@@ -25,11 +25,14 @@ class DonePageBloc extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Completed Tasks', style: context.textTheme.titleLarge),
+                    Text('Completed Tasks',
+                        style: context.textTheme.titleLarge),
                     if (state.doneTasks.isNotEmpty)
                       TextButton(
-                        onPressed: () => bloc.add(DeleteAllTaskEvent(state.doneTasks)),
-                        child: Text('Delete all', style: TextStyle(color: context.colorScheme.error)),
+                        onPressed: () =>
+                            bloc.add(DeleteAllTaskEvent(state.doneTasks)),
+                        child: Text('Delete all',
+                            style: TextStyle(color: context.colorScheme.error)),
                       ),
                   ],
                 ),

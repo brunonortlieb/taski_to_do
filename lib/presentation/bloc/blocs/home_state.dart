@@ -15,8 +15,10 @@ class TaskLoadedState extends TaskState {
 
   const TaskLoadedState({required this.allTasks, required this.filteredTasks});
 
-  List<TaskEntity> get todoTasks => allTasks.where((task) => !task.isDone).toList();
-  List<TaskEntity> get doneTasks => allTasks.where((task) => task.isDone).toList();
+  List<TaskEntity> get todoTasks =>
+      allTasks.where((task) => !task.isDone).toList();
+  List<TaskEntity> get doneTasks =>
+      allTasks.where((task) => task.isDone).toList();
 
   @override
   List<Object> get props => [allTasks, filteredTasks];

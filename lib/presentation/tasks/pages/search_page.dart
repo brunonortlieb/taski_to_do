@@ -53,9 +53,9 @@ class _SearchPageState extends State<SearchPage> {
         ),
         Observer(
           builder: (_) => Expanded(
-            child: store.searchList.isEmpty
+            child: store.filteredTasks.isEmpty
                 ? EmptyListWidget(
-                    onCreate: store.todoList.isNotEmpty
+                    onCreate: store.todoTasks.isNotEmpty
                         ? null
                         : () {
                             showModalBottomSheet(
@@ -68,9 +68,9 @@ class _SearchPageState extends State<SearchPage> {
                 : ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 26),
                     separatorBuilder: (_, __) => const SizedBox(height: 16),
-                    itemCount: store.searchList.length,
+                    itemCount: store.filteredTasks.length,
                     itemBuilder: (_, int index) => TaskWidget(
-                      store.searchList[index],
+                      store.filteredTasks[index],
                       onChanged: store.onChangeTask,
                       onDelete: store.onDeleteTask,
                     ),

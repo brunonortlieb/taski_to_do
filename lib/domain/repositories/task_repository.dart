@@ -5,6 +5,6 @@ abstract class TaskRepository {
   AsyncResult<List<TaskEntity>> getAllTasks();
   AsyncResult<TaskEntity> addTask(TaskEntity task);
   AsyncResult<TaskEntity> updateTask(TaskEntity task);
-  AsyncResult<Unit> deleteTask(TaskEntity task);
-  AsyncResult<Unit> deleteAllTasks(List<TaskEntity> tasks);
+  AsyncResult<Unit> deleteTask(String id);
+  AsyncResult<Unit> deleteAllTasks(List<String> ids);
 }

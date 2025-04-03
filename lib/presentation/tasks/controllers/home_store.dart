@@ -18,32 +18,34 @@ abstract class HomePageBase with Store {
   int currentIndex = 0;
 
   @observable
-  ObservableList<TaskEntity> taskList = ObservableList.of([]);
+  ObservableList<TaskEntity> allTasks = ObservableList.of([]);
   @computed
-  List<TaskEntity> get searchList => taskList.where((e) => e.title.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+  List<TaskEntity> get filteredTasks => allTasks.where((e) => e.title.toLowerCase().contains(searchQuery.toLowerCase())).toList();
   @computed
-  List<TaskEntity> get doneList => taskList.where((e) => e.isDone).toList();
+  List<TaskEntity> get doneTasks => allTasks.where((e) => e.isDone).toList();
   @computed
-  List<TaskEntity> get todoList => taskList.where((e) => !e.isDone).toList();
+  List<TaskEntity> get todoTasks => allTasks.where((e) => !e.isDone).toList();
   @computed
-  String get tasksTodo => todoList.isEmpty ? 'Create tasks to achieve more.' : 'You’ve got ${todoList.length} tasks to do.';
+  String get tasksTodo => todoTasks.isEmpty ? 'Create tasks to achieve more.' : 'You’ve got ${todoTasks.length} tasks to do.';
 
   String get username => 'John';
 
   Future<void> init() async {
     await _repository //
         .getAllTasks()
-        .onSuccess(taskList.addAll);
+        .onSuccess(allTasks.addAll);
   }
 
   @action
   void setCurrentIndex(int index) => currentIndex = index;
 
   @action
-  AsyncResult<Unit> onDeleteDoneTasks() async {
+  AsyncResult<Unit> onDeleteAllTasks(List<TaskEntity> tasks) async {
+    final ids = tasks.map((e) => e.id).toList();
+
     return _repository //
-        .deleteAllTasks(doneList)
-        .onSuccess((_) => taskList.removeWhere((e) => e.isDone));
+        .deleteAllTasks(ids)
+        .onSuccess((_) => allTasks.removeWhere((e) => ids.contains(e.id)));
   }
 
   @action
@@ -51,8 +53,8 @@ abstract class HomePageBase with Store {
     final result = await _repository.updateTask(task);
 
     result.onSuccess((updatedTask) {
-      final index = taskList.indexWhere((e) => e.id == updatedTask.id);
-      taskList[index] = updatedTask;
+      final index = allTasks.indexWhere((e) => e.id == updatedTask.id);
+      allTasks[index] = updatedTask;
     });
 
     return result;
@@ -61,15 +63,15 @@ abstract class HomePageBase with Store {
   @action
   AsyncResult<Unit> onDeleteTask(TaskEntity task) async {
     return _repository //
-        .deleteTask(task)
-        .onSuccess((_) => taskList.removeWhere((e) => e.id == task.id));
+        .deleteTask(task.id)
+        .onSuccess((_) => allTasks.removeWhere((e) => e.id == task.id));
   }
 
   @action
   AsyncResult<TaskEntity> onCreateTask(TaskEntity task) async {
     return _repository //
         .addTask(task)
-        .onSuccess(taskList.add);
+        .onSuccess(allTasks.add);
   }
 
   @action

@@ -44,7 +44,7 @@ class _TodoPageState extends State<TodoPage> {
             ),
           ),
           Expanded(
-            child: store.todoList.isEmpty
+            child: store.todoTasks.isEmpty
                 ? EmptyListWidget(
                     onCreate: () => showModalBottomSheet(
                       isScrollControlled: true,
@@ -55,9 +55,9 @@ class _TodoPageState extends State<TodoPage> {
                 : ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 26),
                     separatorBuilder: (_, __) => const SizedBox(height: 16),
-                    itemCount: store.todoList.length,
+                    itemCount: store.todoTasks.length,
                     itemBuilder: (_, int index) => TaskWidget(
-                      store.todoList[index],
+                      store.todoTasks[index],
                       onChanged: store.onChangeTask,
                       onDelete: store.onDeleteTask,
                     ),

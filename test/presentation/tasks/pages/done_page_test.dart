@@ -28,8 +28,8 @@ void main() {
   }
 
   group('DonePage', () {
-    testWidgets('should display an empty state when doneList is empty', (WidgetTester tester) async {
-      when(() => mockStore.doneList).thenReturn([]);
+    testWidgets('should display an empty state when doneTasks is empty', (WidgetTester tester) async {
+      when(() => mockStore.doneTasks).thenReturn([]);
 
       await loadScreen(tester);
 
@@ -38,8 +38,8 @@ void main() {
       expect(find.text('Delete all'), findsNothing);
     });
 
-    testWidgets('should display tasks and delete button when doneList is not empty', (WidgetTester tester) async {
-      when(() => mockStore.doneList).thenReturn([kTaskEntity]);
+    testWidgets('should display tasks and delete button when doneTasks is not empty', (WidgetTester tester) async {
+      when(() => mockStore.doneTasks).thenReturn([kTaskEntity]);
 
       await loadScreen(tester);
 
@@ -48,16 +48,16 @@ void main() {
       expect(find.text('Delete all'), findsOneWidget);
     });
 
-    testWidgets('should call onDeleteDoneTasks when delete button is pressed', (WidgetTester tester) async {
-      when(() => mockStore.doneList).thenReturn([kTaskEntity]);
-      when(() => mockStore.onDeleteDoneTasks()).thenAnswer((_) async => const Success(unit));
+    testWidgets('should call onDeleteAllTasks when delete button is pressed', (WidgetTester tester) async {
+      when(() => mockStore.doneTasks).thenReturn([kTaskEntity]);
+      when(() => mockStore.onDeleteAllTasks(any())).thenAnswer((_) async => const Success(unit));
 
       await loadScreen(tester);
 
       await tester.tap(find.text('Delete all'));
       await tester.pump();
 
-      verify(() => mockStore.onDeleteDoneTasks()).called(1);
+      verify(() => mockStore.onDeleteAllTasks(any())).called(1);
     });
   });
 }

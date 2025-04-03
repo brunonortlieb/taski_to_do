@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Taski to Do (MobX)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_mobx.dart"
+        },
+        {
+            "name": "Taski to Do (BloC)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_bloc.dart"
+        },
+    ]
+}

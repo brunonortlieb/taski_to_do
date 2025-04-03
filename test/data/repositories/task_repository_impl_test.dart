@@ -90,7 +90,7 @@ void main() {
     test('Should return a [Unit] when succeeds', () async {
       when(() => mockDatasource.deleteTask(any())).thenAnswer((_) async {});
 
-      final result = await repository.deleteTask(kTaskEntity);
+      final result = await repository.deleteTask(kTaskEntity.id);
 
       expect(result.isSuccess(), true);
       expect(result.getOrNull(), isA<Unit>());
@@ -100,7 +100,7 @@ void main() {
     test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
       when(() => mockDatasource.deleteTask(any())).thenThrow(Exception());
 
-      final result = await repository.deleteTask(kTaskEntity);
+      final result = await repository.deleteTask(kTaskEntity.id);
 
       expect(result.isSuccess(), false);
       expect(result.exceptionOrNull(), isA<CacheException>());
@@ -112,7 +112,7 @@ void main() {
     test('Should return a [Unit] when succeeds', () async {
       when(() => mockDatasource.deleteAllTasks(any())).thenAnswer((_) async {});
 
-      final result = await repository.deleteAllTasks([kTaskEntity]);
+      final result = await repository.deleteAllTasks([kTaskEntity.id]);
 
       expect(result.isSuccess(), true);
       expect(result.getOrNull(), isA<Unit>());
@@ -122,7 +122,7 @@ void main() {
     test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
       when(() => mockDatasource.deleteAllTasks(any())).thenThrow(Exception());
 
-      final result = await repository.deleteAllTasks([kTaskEntity]);
+      final result = await repository.deleteAllTasks([kTaskEntity.id]);
 
       expect(result.isSuccess(), false);
       expect(result.exceptionOrNull(), isA<CacheException>());

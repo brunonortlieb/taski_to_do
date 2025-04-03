@@ -23,8 +23,8 @@ void main() {
 
     enableWarnWhenNoObservables = false;
 
-    when(() => mockStore.searchList).thenReturn([]);
-    when(() => mockStore.todoList).thenReturn([]);
+    when(() => mockStore.filteredTasks).thenReturn([]);
+    when(() => mockStore.todoTasks).thenReturn([]);
     when(() => mockStore.onSearch(any())).thenAnswer((_) {});
   });
 
@@ -33,8 +33,8 @@ void main() {
   }
 
   group('SearchPage', () {
-    testWidgets('should display an empty state when searchList is empty', (WidgetTester tester) async {
-      when(() => mockStore.searchList).thenReturn([]);
+    testWidgets('should display an empty state when filteredTasks is empty', (WidgetTester tester) async {
+      when(() => mockStore.filteredTasks).thenReturn([]);
 
       await loadScreen(tester);
 
@@ -42,8 +42,8 @@ void main() {
       expect(find.text('Search...'), findsOneWidget);
     });
 
-    testWidgets('should display tasks when searchList is not empty', (WidgetTester tester) async {
-      when(() => mockStore.searchList).thenReturn([kTaskEntity]);
+    testWidgets('should display tasks when filteredTasks is not empty', (WidgetTester tester) async {
+      when(() => mockStore.filteredTasks).thenReturn([kTaskEntity]);
 
       await loadScreen(tester);
 
@@ -74,7 +74,7 @@ void main() {
     });
 
     testWidgets('should show bottom sheet when create button is pressed', (WidgetTester tester) async {
-      when(() => mockStore.todoList).thenReturn([]);
+      when(() => mockStore.todoTasks).thenReturn([]);
 
       await loadScreen(tester);
 

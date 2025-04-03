@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:taski_to_do/core/routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taski_to_do/core/theme/themes.dart';
 
 class AppWidget extends StatelessWidget {
-  const AppWidget({super.key});
+  final GoRouter router;
+
+  const AppWidget(this.router, {super.key});
 
   @override
   Widget build(BuildContext context) {

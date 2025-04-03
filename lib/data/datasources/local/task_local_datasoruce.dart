@@ -29,9 +29,9 @@ class TaskLocalDatasourceImpl extends TaskDatasource {
   }
 
   @override
-  Future<void> deleteTask(TaskModel task) async {
+  Future<void> deleteTask(String id) async {
     final box = await _hive.openBox<TaskModel>(HiveBoxes.task);
-    await box.delete(task.id);
+    await box.delete(id);
   }
 
   @override
@@ -41,9 +41,8 @@ class TaskLocalDatasourceImpl extends TaskDatasource {
   }
 
   @override
-  Future<void> deleteAllTasks(List<TaskModel> tasks) async {
+  Future<void> deleteAllTasks(List<String> ids) async {
     final box = await _hive.openBox<TaskModel>(HiveBoxes.task);
-    final idList = tasks.map((e) => e.id);
-    await box.deleteAll(idList);
+    await box.deleteAll(ids);
   }
 }

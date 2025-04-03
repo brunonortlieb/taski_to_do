@@ -41,9 +41,9 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  AsyncResult<Unit> deleteTask(TaskEntity task) async {
+  AsyncResult<Unit> deleteTask(String id) async {
     try {
-      await datasource.deleteTask(TaskModel.fromEntity(task));
+      await datasource.deleteTask(id);
       return const Success(unit);
     } catch (e, s) {
       return Failure(CacheException('Failed to delete task', s));
@@ -51,9 +51,9 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  AsyncResult<Unit> deleteAllTasks(List<TaskEntity> tasks) async {
+  AsyncResult<Unit> deleteAllTasks(List<String> ids) async {
     try {
-      await datasource.deleteAllTasks(tasks.map(TaskModel.fromEntity).toList());
+      await datasource.deleteAllTasks(ids);
       return const Success(unit);
     } catch (e, s) {
       return Failure(CacheException('Failed to delete task', s));

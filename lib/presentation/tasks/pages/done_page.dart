@@ -28,23 +28,23 @@ class _DonePageState extends State<DonePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Completed Tasks', style: context.textTheme.titleLarge),
-                if (store.doneList.isNotEmpty)
+                if (store.doneTasks.isNotEmpty)
                   TextButton(
-                    onPressed: store.onDeleteDoneTasks,
+                    onPressed: () => store.onDeleteAllTasks(store.doneTasks),
                     child: Text('Delete all', style: TextStyle(color: context.colorScheme.error)),
                   ),
               ],
             ),
           ),
           Expanded(
-            child: store.doneList.isEmpty
+            child: store.doneTasks.isEmpty
                 ? const EmptyListWidget()
                 : ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 26),
                     separatorBuilder: (_, __) => const SizedBox(height: 16),
-                    itemCount: store.doneList.length,
+                    itemCount: store.doneTasks.length,
                     itemBuilder: (_, int index) => TaskWidget(
-                      store.doneList[index],
+                      store.doneTasks[index],
                       onChanged: store.onChangeTask,
                       onDelete: store.onDeleteTask,
                     ),

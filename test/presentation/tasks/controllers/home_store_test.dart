@@ -23,10 +23,10 @@ void main() {
 
       await store.init();
 
-      expect(store.todoList.length, equals(1));
-      expect(store.todoList.first, equals(kTaskEntity));
-      expect(store.searchList.length, equals(1));
-      expect(store.doneList.isEmpty, isTrue);
+      expect(store.todoTasks.length, equals(1));
+      expect(store.todoTasks.first, equals(kTaskEntity));
+      expect(store.filteredTasks.length, equals(1));
+      expect(store.doneTasks.isEmpty, isTrue);
       verify(() => mockRepository.getAllTasks()).called(1);
     });
 
@@ -35,9 +35,9 @@ void main() {
 
       await store.init();
 
-      expect(store.todoList.isEmpty, isTrue);
-      expect(store.searchList.isEmpty, isTrue);
-      expect(store.doneList.isEmpty, isTrue);
+      expect(store.todoTasks.isEmpty, isTrue);
+      expect(store.filteredTasks.isEmpty, isTrue);
+      expect(store.doneTasks.isEmpty, isTrue);
       verify(() => mockRepository.getAllTasks()).called(1);
     });
 
@@ -47,49 +47,49 @@ void main() {
       expect(store.currentIndex, equals(1));
     });
 
-    test('should filter searchList on search', () {
-      store.taskList.addAll([kTaskEntity]);
+    test('should filter filteredTasks on search', () {
+      store.allTasks.addAll([kTaskEntity]);
 
       store.onSearch('title');
 
-      expect(store.searchList.length, equals(1));
-      expect(store.searchList.first, equals(kTaskEntity));
+      expect(store.filteredTasks.length, equals(1));
+      expect(store.filteredTasks.first, equals(kTaskEntity));
     });
 
     test('should delete all done tasks', () async {
-      final task = kTaskEntity.copyWith(isDone: true);
-      store.taskList.addAll([task]);
+      final task = kTaskEntity.copyWith(id: '11');
+      store.allTasks.addAll([task, kTaskEntity]);
       when(() => mockRepository.deleteAllTasks(any())).thenAnswer((_) async => const Success(unit));
 
-      await store.onDeleteDoneTasks();
+      await store.onDeleteAllTasks([task]);
 
-      expect(store.doneList.isEmpty, isTrue);
-      expect(store.searchList.isEmpty, isTrue);
+      expect(store.allTasks.length, equals(1));
+      expect(store.filteredTasks.length, equals(1));
       verify(() => mockRepository.deleteAllTasks(any())).called(1);
     });
 
     test('should toggle task status and update lists', () async {
-      store.taskList.addAll([kTaskEntity]);
+      store.allTasks.addAll([kTaskEntity]);
       when(() => mockRepository.updateTask(any())).thenAnswer((_) async => Success(kTaskEntity.copyWith(isDone: true)));
 
       await store.onChangeTask(kTaskEntity.copyWith(isDone: true));
 
-      expect(store.todoList.isEmpty, isTrue);
-      expect(store.doneList.length, equals(1));
-      expect(store.searchList.first.isDone, isTrue);
+      expect(store.todoTasks.isEmpty, isTrue);
+      expect(store.doneTasks.length, equals(1));
+      expect(store.filteredTasks.first.isDone, isTrue);
       verify(() => mockRepository.updateTask(any())).called(1);
     });
 
     test('should delete a task and update lists', () async {
-      store.taskList.addAll([kTaskEntity]);
+      store.allTasks.addAll([kTaskEntity]);
       when(() => mockRepository.deleteTask(any())).thenAnswer((_) async => const Success(unit));
 
       final result = await store.onDeleteTask(kTaskEntity);
 
       expect(result.isSuccess(), isTrue);
-      expect(store.todoList.isEmpty, isTrue);
-      expect(store.searchList.isEmpty, isTrue);
-      expect(store.doneList.isEmpty, isTrue);
+      expect(store.todoTasks.isEmpty, isTrue);
+      expect(store.filteredTasks.isEmpty, isTrue);
+      expect(store.doneTasks.isEmpty, isTrue);
       verify(() => mockRepository.deleteTask(any())).called(1);
     });
 
@@ -99,8 +99,8 @@ void main() {
       final result = await store.onCreateTask(kTaskEntity);
 
       expect(result.isSuccess(), isTrue);
-      expect(store.todoList.length, equals(1));
-      expect(store.searchList.length, equals(1));
+      expect(store.todoTasks.length, equals(1));
+      expect(store.filteredTasks.length, equals(1));
       verify(() => mockRepository.addTask(any())).called(1);
     });
   });

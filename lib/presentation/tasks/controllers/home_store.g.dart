@@ -9,26 +9,26 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeStore on HomePageBase, Store {
-  Computed<List<TaskEntity>>? _$searchListComputed;
+  Computed<List<TaskEntity>>? _$filteredTasksComputed;
 
   @override
-  List<TaskEntity> get searchList => (_$searchListComputed ??=
-          Computed<List<TaskEntity>>(() => super.searchList,
-              name: 'HomePageBase.searchList'))
+  List<TaskEntity> get filteredTasks => (_$filteredTasksComputed ??=
+          Computed<List<TaskEntity>>(() => super.filteredTasks,
+              name: 'HomePageBase.filteredTasks'))
       .value;
-  Computed<List<TaskEntity>>? _$doneListComputed;
+  Computed<List<TaskEntity>>? _$doneTasksComputed;
 
   @override
-  List<TaskEntity> get doneList =>
-      (_$doneListComputed ??= Computed<List<TaskEntity>>(() => super.doneList,
-              name: 'HomePageBase.doneList'))
+  List<TaskEntity> get doneTasks =>
+      (_$doneTasksComputed ??= Computed<List<TaskEntity>>(() => super.doneTasks,
+              name: 'HomePageBase.doneTasks'))
           .value;
-  Computed<List<TaskEntity>>? _$todoListComputed;
+  Computed<List<TaskEntity>>? _$todoTasksComputed;
 
   @override
-  List<TaskEntity> get todoList =>
-      (_$todoListComputed ??= Computed<List<TaskEntity>>(() => super.todoList,
-              name: 'HomePageBase.todoList'))
+  List<TaskEntity> get todoTasks =>
+      (_$todoTasksComputed ??= Computed<List<TaskEntity>>(() => super.todoTasks,
+              name: 'HomePageBase.todoTasks'))
           .value;
   Computed<String>? _$tasksTodoComputed;
 
@@ -70,28 +70,29 @@ mixin _$HomeStore on HomePageBase, Store {
     });
   }
 
-  late final _$taskListAtom =
-      Atom(name: 'HomePageBase.taskList', context: context);
+  late final _$allTasksAtom =
+      Atom(name: 'HomePageBase.allTasks', context: context);
 
   @override
-  ObservableList<TaskEntity> get taskList {
-    _$taskListAtom.reportRead();
-    return super.taskList;
+  ObservableList<TaskEntity> get allTasks {
+    _$allTasksAtom.reportRead();
+    return super.allTasks;
   }
 
   @override
-  set taskList(ObservableList<TaskEntity> value) {
-    _$taskListAtom.reportWrite(value, super.taskList, () {
-      super.taskList = value;
+  set allTasks(ObservableList<TaskEntity> value) {
+    _$allTasksAtom.reportWrite(value, super.allTasks, () {
+      super.allTasks = value;
     });
   }
 
-  late final _$onDeleteDoneTasksAsyncAction =
-      AsyncAction('HomePageBase.onDeleteDoneTasks', context: context);
+  late final _$onDeleteAllTasksAsyncAction =
+      AsyncAction('HomePageBase.onDeleteAllTasks', context: context);
 
   @override
-  Future<ResultDart<Unit, Exception>> onDeleteDoneTasks() {
-    return _$onDeleteDoneTasksAsyncAction.run(() => super.onDeleteDoneTasks());
+  Future<ResultDart<Unit, Exception>> onDeleteAllTasks(List<TaskEntity> tasks) {
+    return _$onDeleteAllTasksAsyncAction
+        .run(() => super.onDeleteAllTasks(tasks));
   }
 
   late final _$onChangeTaskAsyncAction =
@@ -148,10 +149,10 @@ mixin _$HomeStore on HomePageBase, Store {
     return '''
 searchQuery: ${searchQuery},
 currentIndex: ${currentIndex},
-taskList: ${taskList},
-searchList: ${searchList},
-doneList: ${doneList},
-todoList: ${todoList},
+allTasks: ${allTasks},
+filteredTasks: ${filteredTasks},
+doneTasks: ${doneTasks},
+todoTasks: ${todoTasks},
 tasksTodo: ${tasksTodo}
     ''';
   }

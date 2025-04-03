@@ -28,7 +28,7 @@ void main() {
 
     when(() => mockStore.username).thenReturn('John');
     when(() => mockStore.tasksTodo).thenReturn('tasksTodo');
-    when(() => mockStore.todoList).thenReturn([kTaskEntity]);
+    when(() => mockStore.todoTasks).thenReturn([kTaskEntity]);
     when(() => mockStore.onCreateTask(any())).thenAnswer((_) async => Success(kTaskEntity));
     when(() => mockStore.onChangeTask(any())).thenAnswer((_) async => Success(kTaskEntity));
     when(() => mockStore.onDeleteTask(any())).thenAnswer((_) async => const Success(unit));
@@ -46,15 +46,15 @@ void main() {
       expect(find.text('tasksTodo'), findsOneWidget);
     });
 
-    testWidgets('should display an empty state when todoList is empty', (WidgetTester tester) async {
-      when(() => mockStore.todoList).thenReturn([]);
+    testWidgets('should display an empty state when todoTasks is empty', (WidgetTester tester) async {
+      when(() => mockStore.todoTasks).thenReturn([]);
 
       await loadScreen(tester);
 
       expect(find.byType(EmptyListWidget), findsOneWidget);
     });
 
-    testWidgets('should display tasks when todoList is not empty', (WidgetTester tester) async {
+    testWidgets('should display tasks when todoTasks is not empty', (WidgetTester tester) async {
       await loadScreen(tester);
 
       expect(find.byType(TaskWidget), findsOneWidget);
@@ -62,7 +62,7 @@ void main() {
     });
 
     testWidgets('should show bottom sheet when create button is pressed', (WidgetTester tester) async {
-      when(() => mockStore.todoList).thenReturn([]);
+      when(() => mockStore.todoTasks).thenReturn([]);
 
       await loadScreen(tester);
 

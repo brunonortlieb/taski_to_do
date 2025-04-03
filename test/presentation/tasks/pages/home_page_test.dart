@@ -26,9 +26,9 @@ void main() {
     when(() => mockStore.username).thenReturn('John');
     when(() => mockStore.init()).thenAnswer((_) async {});
     when(() => mockStore.tasksTodo).thenReturn('');
-    when(() => mockStore.todoList).thenReturn([]);
-    when(() => mockStore.searchList).thenReturn([]);
-    when(() => mockStore.doneList).thenReturn([]);
+    when(() => mockStore.todoTasks).thenReturn([]);
+    when(() => mockStore.filteredTasks).thenReturn([]);
+    when(() => mockStore.doneTasks).thenReturn([]);
   });
 
   Future<void> loadScreen(WidgetTester tester) async {

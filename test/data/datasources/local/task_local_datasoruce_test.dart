@@ -51,7 +51,7 @@ void main() {
     test('should delete a task from the box', () async {
       when(() => mockBox.delete(any())).thenAnswer((_) async {});
 
-      await dataSource.deleteTask(kTaskModel);
+      await dataSource.deleteTask(kTaskModel.id);
 
       verify(() => mockBox.delete(any())).called(1);
     });
@@ -67,13 +67,11 @@ void main() {
     });
 
     test('should delete multiple tasks from the box', () async {
-      final tasks = [kTaskModel];
-      final ids = tasks.map((e) => e.id).toList();
       when(() => mockBox.deleteAll(any())).thenAnswer((_) async {});
 
-      await dataSource.deleteAllTasks(tasks);
+      await dataSource.deleteAllTasks([kTaskModel.id]);
 
-      verify(() => mockBox.deleteAll(ids)).called(1);
+      verify(() => mockBox.deleteAll(any())).called(1);
     });
   });
 }

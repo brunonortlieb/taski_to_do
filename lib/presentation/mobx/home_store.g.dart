@@ -30,13 +30,6 @@ mixin _$HomeStore on HomePageBase, Store {
       (_$todoTasksComputed ??= Computed<List<TaskEntity>>(() => super.todoTasks,
               name: 'HomePageBase.todoTasks'))
           .value;
-  Computed<String>? _$tasksTodoComputed;
-
-  @override
-  String get tasksTodo =>
-      (_$tasksTodoComputed ??= Computed<String>(() => super.tasksTodo,
-              name: 'HomePageBase.tasksTodo'))
-          .value;
 
   late final _$searchQueryAtom =
       Atom(name: 'HomePageBase.searchQuery', context: context);
@@ -86,37 +79,36 @@ mixin _$HomeStore on HomePageBase, Store {
     });
   }
 
-  late final _$onDeleteAllTasksAsyncAction =
-      AsyncAction('HomePageBase.onDeleteAllTasks', context: context);
+  late final _$deleteAllTasksAsyncAction =
+      AsyncAction('HomePageBase.deleteAllTasks', context: context);
 
   @override
-  Future<ResultDart<Unit, Exception>> onDeleteAllTasks(List<TaskEntity> tasks) {
-    return _$onDeleteAllTasksAsyncAction
-        .run(() => super.onDeleteAllTasks(tasks));
+  Future<ResultDart<Unit, Exception>> deleteAllTasks(List<TaskEntity> tasks) {
+    return _$deleteAllTasksAsyncAction.run(() => super.deleteAllTasks(tasks));
   }
 
-  late final _$onChangeTaskAsyncAction =
-      AsyncAction('HomePageBase.onChangeTask', context: context);
+  late final _$updateTaskAsyncAction =
+      AsyncAction('HomePageBase.updateTask', context: context);
 
   @override
-  Future<ResultDart<TaskEntity, Exception>> onChangeTask(TaskEntity task) {
-    return _$onChangeTaskAsyncAction.run(() => super.onChangeTask(task));
+  Future<ResultDart<TaskEntity, Exception>> updateTask(TaskEntity task) {
+    return _$updateTaskAsyncAction.run(() => super.updateTask(task));
   }
 
-  late final _$onDeleteTaskAsyncAction =
-      AsyncAction('HomePageBase.onDeleteTask', context: context);
+  late final _$deleteTaskAsyncAction =
+      AsyncAction('HomePageBase.deleteTask', context: context);
 
   @override
-  Future<ResultDart<Unit, Exception>> onDeleteTask(TaskEntity task) {
-    return _$onDeleteTaskAsyncAction.run(() => super.onDeleteTask(task));
+  Future<ResultDart<Unit, Exception>> deleteTask(TaskEntity task) {
+    return _$deleteTaskAsyncAction.run(() => super.deleteTask(task));
   }
 
-  late final _$onCreateTaskAsyncAction =
-      AsyncAction('HomePageBase.onCreateTask', context: context);
+  late final _$createTaskAsyncAction =
+      AsyncAction('HomePageBase.createTask', context: context);
 
   @override
-  Future<ResultDart<TaskEntity, Exception>> onCreateTask(TaskEntity task) {
-    return _$onCreateTaskAsyncAction.run(() => super.onCreateTask(task));
+  Future<ResultDart<TaskEntity, Exception>> createTask(TaskEntity task) {
+    return _$createTaskAsyncAction.run(() => super.createTask(task));
   }
 
   late final _$HomePageBaseActionController =
@@ -134,11 +126,11 @@ mixin _$HomeStore on HomePageBase, Store {
   }
 
   @override
-  void onSearch(String value) {
+  void searchTasks(String value) {
     final _$actionInfo = _$HomePageBaseActionController.startAction(
-        name: 'HomePageBase.onSearch');
+        name: 'HomePageBase.searchTasks');
     try {
-      return super.onSearch(value);
+      return super.searchTasks(value);
     } finally {
       _$HomePageBaseActionController.endAction(_$actionInfo);
     }
@@ -152,8 +144,7 @@ currentIndex: ${currentIndex},
 allTasks: ${allTasks},
 filteredTasks: ${filteredTasks},
 doneTasks: ${doneTasks},
-todoTasks: ${todoTasks},
-tasksTodo: ${tasksTodo}
+todoTasks: ${todoTasks}
     ''';
   }
 }

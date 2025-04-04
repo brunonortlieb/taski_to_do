@@ -44,6 +44,9 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v3
         with:
           path: coverage/lcov.info
+          exclude: '**/*.g.dart'
+          min_coverage: 60
+
 
   flutter-cd:
     name: CD - Build & Artifacts (${{ matrix.platform }})

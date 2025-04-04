@@ -4,8 +4,8 @@ import 'package:taski_to_do/data/datasources/local/task_local_datasoruce.dart';
 import 'package:taski_to_do/data/datasources/task_datasource.dart';
 import 'package:taski_to_do/data/repositories/task_repository_impl.dart';
 import 'package:taski_to_do/domain/repositories/task_repository.dart';
-import 'package:taski_to_do/presentation/bloc/blocs/home_bloc.dart';
-import 'package:taski_to_do/presentation/tasks/controllers/home_store.dart';
+import 'package:taski_to_do/presentation/bloc/home_bloc.dart';
+import 'package:taski_to_do/presentation/mobx/home_store.dart';
 
 final injector = AutoInjector();
 

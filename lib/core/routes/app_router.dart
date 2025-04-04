@@ -1,21 +1,21 @@
 import 'package:go_router/go_router.dart';
-import 'package:taski_to_do/presentation/bloc/pages/home_page_bloc.dart';
-import 'package:taski_to_do/presentation/tasks/pages/home_page.dart';
+import 'package:taski_to_do/presentation/pages/home_page_bloc.dart';
+import 'package:taski_to_do/presentation/pages/home_page_mobx.dart';
 
 import 'app_routes.dart';
 
 final mobxRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: AppRoutes.home,
   routes: [
     GoRoute(
       path: AppRoutes.home,
-      builder: (_, __) => const HomePage(),
+      builder: (_, __) => const HomePageMobx(),
     ),
   ],
 );
 
 final blocRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: AppRoutes.home,
   routes: [
     GoRoute(
       path: AppRoutes.home,

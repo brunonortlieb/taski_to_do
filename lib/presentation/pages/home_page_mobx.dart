@@ -3,26 +3,36 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:taski_to_do/core/constants/image_assets.dart';
 import 'package:taski_to_do/core/di/injector.dart';
 import 'package:taski_to_do/core/extensions/context_extension.dart';
-import 'package:taski_to_do/presentation/tasks/controllers/home_store.dart';
-import 'package:taski_to_do/presentation/tasks/pages/done_page.dart';
-import 'package:taski_to_do/presentation/tasks/pages/search_page.dart';
-import 'package:taski_to_do/presentation/tasks/pages/todo_page.dart';
-import 'package:taski_to_do/presentation/tasks/widgets/create_task_widget.dart';
+import 'package:taski_to_do/presentation/mobx/home_store.dart';
+import 'package:taski_to_do/presentation/widgets/create_task_widget.dart';
+import 'package:taski_to_do/presentation/widgets/custom_nav_bar_item.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+import 'done_page.dart';
+import 'search_page.dart';
+import 'todo_page.dart';
+
+class HomePageMobx extends StatefulWidget {
+  const HomePageMobx({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageMobx> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePageMobx> {
   final store = injector.get<HomeStore>();
 
   @override
   void initState() {
     store.init();
     super.initState();
+  }
+
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      _showCreateTaskBottomSheet(context);
+    } else {
+      store.setCurrentIndex(index);
+    }
   }
 
   @override
@@ -40,7 +50,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(width: 8),
               const Expanded(child: Text('Taski')),
-              Text(store.username),
+              const Text('Jhon'),
               const SizedBox(width: 14),
               CircleAvatar(radius: 21, child: Image.asset(ImageAssets.avatar)),
             ],
@@ -60,18 +70,14 @@ class _HomePageState extends State<HomePage> {
           ),
           child: BottomNavigationBar(
             currentIndex: store.currentIndex,
-            onTap: (index) {
-              if (index == 1) {
-                _showCreateTaskBottomSheet(context);
-              } else {
-                store.setCurrentIndex(index);
-              }
-            },
+            onTap: _onItemTapped,
             items: [
-              _navBarItem(icon: ImageAssets.todoIcon, label: 'Todo'),
-              _navBarItem(icon: ImageAssets.createIcon, label: 'Create'),
-              _navBarItem(icon: ImageAssets.searchIcon, label: 'Search'),
-              _navBarItem(icon: ImageAssets.doneIcon, label: 'Done'),
+              customNavBarItem(iconPath: ImageAssets.todoIcon, label: 'Todo'),
+              customNavBarItem(
+                  iconPath: ImageAssets.createIcon, label: 'Create'),
+              customNavBarItem(
+                  iconPath: ImageAssets.searchIcon, label: 'Search'),
+              customNavBarItem(iconPath: ImageAssets.doneIcon, label: 'Done'),
             ],
           ),
         ),
@@ -80,27 +86,30 @@ class _HomePageState extends State<HomePage> {
         builder: (_) => IndexedStack(
           index: store.currentIndex,
           children: [
-            const TodoPage(),
-            Container(),
-            const SearchPage(),
-            const DonePage(),
+            TodoPage(
+              todoTasks: store.todoTasks,
+              onCreateTask: store.createTask,
+              onUpdateTask: store.updateTask,
+              onDeleteTask: store.deleteTask,
+            ),
+            const SizedBox.shrink(),
+            SearchPage(
+              todoTasks: store.todoTasks,
+              filteredTasks: store.filteredTasks,
+              onCreateTask: store.createTask,
+              onUpdateTask: store.updateTask,
+              onDeleteTask: store.deleteTask,
+              onSearchTasks: store.searchTasks,
+            ),
+            DonePage(
+              doneTasks: store.doneTasks,
+              onUpdateTask: store.updateTask,
+              onDeleteTask: store.deleteTask,
+              onDeleteAllTasks: store.deleteAllTasks,
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  BottomNavigationBarItem _navBarItem({
-    required String icon,
-    required String label,
-  }) {
-    return BottomNavigationBarItem(
-      key: Key(label),
-      icon: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: ImageIcon(AssetImage(icon)),
-      ),
-      label: label,
     );
   }
 
@@ -109,7 +118,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return CreateTaskWidget(store.onCreateTask);
+        return CreateTaskWidget(store.createTask);
       },
     );
   }

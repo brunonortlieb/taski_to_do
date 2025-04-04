@@ -11,7 +11,7 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
 
   HomeBloc(this._repository) : super(TaskLoadingState()) {
     on<LoadTasksEvent>(_loadTasksEvent);
-    on<AddTaskEvent>(_addTask);
+    on<CreateTaskEvent>(_createTask);
     on<UpdateTaskEvent>(_updateTask);
     on<DeleteTaskEvent>(_deleteTask);
     on<SearchTasksEvent>(_searchTasks);
@@ -22,12 +22,19 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
       LoadTasksEvent event, Emitter<TaskState> emit) async {
     final result = await _repository.getAllTasks();
     result.fold(
-      (tasks) => emit(TaskLoadedState(allTasks: tasks, filteredTasks: tasks)),
+      (tasks) => emit(TaskLoadedState(
+        filterQuery: '',
+        allTasks: tasks,
+        filteredTasks: tasks,
+        doneTasks: tasks.where((task) => task.isDone).toList(),
+        todoTasks: tasks.where((task) => !task.isDone).toList(),
+      )),
       (failure) => emit(TaskErrorState(failure.toString())),
     );
   }
 
-  Future<void> _addTask(AddTaskEvent event, Emitter<TaskState> emit) async {
+  Future<void> _createTask(
+      CreateTaskEvent event, Emitter<TaskState> emit) async {
     if (state is! TaskLoadedState) return;
     final currentState = state as TaskLoadedState;
 
@@ -36,8 +43,7 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
       final taskList = List<TaskEntity>.from(currentState.allTasks);
       taskList.add(newTask);
 
-      emit(TaskLoadedState(
-          allTasks: taskList, filteredTasks: currentState.filteredTasks));
+      emit(_updateState(currentState, allTasks: taskList));
     }, (failure) => emit(TaskErrorState(failure.toString())));
   }
 
@@ -52,8 +58,7 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
       final index = taskList.indexWhere((e) => e.id == updatedTask.id);
       taskList[index] = updatedTask;
 
-      emit(TaskLoadedState(
-          allTasks: taskList, filteredTasks: currentState.filteredTasks));
+      emit(_updateState(currentState, allTasks: taskList));
     }, (failure) => emit(TaskErrorState(failure.toString())));
   }
 
@@ -66,10 +71,8 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
     result.fold((_) {
       final taskList = List<TaskEntity>.from(currentState.allTasks);
       taskList.removeWhere((e) => e.id == event.task.id);
-      final filteredTasks = List<TaskEntity>.from(currentState.filteredTasks);
-      filteredTasks.removeWhere((e) => e.id == event.task.id);
 
-      emit(TaskLoadedState(allTasks: taskList, filteredTasks: filteredTasks));
+      emit(_updateState(currentState, allTasks: taskList));
     }, (failure) => emit(TaskErrorState(failure.toString())));
   }
 
@@ -77,13 +80,7 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
     if (state is! TaskLoadedState) return;
     final currentState = state as TaskLoadedState;
 
-    final filteredTasks = currentState.allTasks
-        .where((e) => e.title.toLowerCase().contains(event.query.toLowerCase()))
-        .toList();
-    emit(TaskLoadedState(
-      allTasks: List.from(currentState.allTasks),
-      filteredTasks: List.from(filteredTasks),
-    ));
+    emit(_updateState(currentState, filterQuery: event.query));
   }
 
   Future<void> _deleteAllTask(
@@ -96,10 +93,27 @@ class HomeBloc extends Bloc<TaskEvent, TaskState> {
     result.fold((_) {
       final taskList = List<TaskEntity>.from(currentState.allTasks);
       taskList.removeWhere((e) => ids.contains(e.id));
-      final filteredTasks = List<TaskEntity>.from(currentState.filteredTasks);
-      filteredTasks.removeWhere((e) => ids.contains(e.id));
 
-      emit(TaskLoadedState(allTasks: taskList, filteredTasks: filteredTasks));
+      emit(_updateState(currentState, allTasks: taskList));
     }, (failure) => emit(TaskErrorState(failure.toString())));
+  }
+
+  TaskLoadedState _updateState(TaskLoadedState state,
+      {List<TaskEntity>? allTasks, String? filterQuery}) {
+    final todoTasks = allTasks?.where((task) => !task.isDone).toList();
+    final doneTasks = allTasks?.where((task) => task.isDone).toList();
+    final filteredTasks = (allTasks ?? state.allTasks)
+        .where((e) => e.title
+            .toLowerCase()
+            .contains((filterQuery ?? state.filterQuery).toLowerCase()))
+        .toList();
+
+    return TaskLoadedState(
+      allTasks: allTasks ?? state.allTasks,
+      todoTasks: todoTasks ?? state.todoTasks,
+      doneTasks: doneTasks ?? state.doneTasks,
+      filteredTasks: filteredTasks,
+      filterQuery: filterQuery ?? state.filterQuery,
+    );
   }
 }

@@ -27,12 +27,6 @@ abstract class HomePageBase with Store {
   List<TaskEntity> get doneTasks => allTasks.where((e) => e.isDone).toList();
   @computed
   List<TaskEntity> get todoTasks => allTasks.where((e) => !e.isDone).toList();
-  @computed
-  String get tasksTodo => todoTasks.isEmpty
-      ? 'Create tasks to achieve more.'
-      : 'You’ve got ${todoTasks.length} tasks to do.';
-
-  String get username => 'John';
 
   Future<void> init() async {
     await _repository //
@@ -44,7 +38,7 @@ abstract class HomePageBase with Store {
   void setCurrentIndex(int index) => currentIndex = index;
 
   @action
-  AsyncResult<Unit> onDeleteAllTasks(List<TaskEntity> tasks) async {
+  AsyncResult<Unit> deleteAllTasks(List<TaskEntity> tasks) async {
     final ids = tasks.map((e) => e.id).toList();
 
     return _repository //
@@ -53,7 +47,7 @@ abstract class HomePageBase with Store {
   }
 
   @action
-  AsyncResult<TaskEntity> onChangeTask(TaskEntity task) async {
+  AsyncResult<TaskEntity> updateTask(TaskEntity task) async {
     final result = await _repository.updateTask(task);
 
     result.onSuccess((updatedTask) {
@@ -65,19 +59,19 @@ abstract class HomePageBase with Store {
   }
 
   @action
-  AsyncResult<Unit> onDeleteTask(TaskEntity task) async {
+  AsyncResult<Unit> deleteTask(TaskEntity task) async {
     return _repository //
         .deleteTask(task.id)
         .onSuccess((_) => allTasks.removeWhere((e) => e.id == task.id));
   }
 
   @action
-  AsyncResult<TaskEntity> onCreateTask(TaskEntity task) async {
+  AsyncResult<TaskEntity> createTask(TaskEntity task) async {
     return _repository //
         .addTask(task)
         .onSuccess(allTasks.add);
   }
 
   @action
-  void onSearch(String value) => searchQuery = value;
+  void searchTasks(String value) => searchQuery = value;
 }

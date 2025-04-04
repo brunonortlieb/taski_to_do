@@ -8,9 +8,9 @@ abstract class TaskEvent extends Equatable {
 
 class LoadTasksEvent extends TaskEvent {}
 
-class AddTaskEvent extends TaskEvent {
+class CreateTaskEvent extends TaskEvent {
   final TaskEntity task;
-  const AddTaskEvent(this.task);
+  const CreateTaskEvent(this.task);
 }
 
 class UpdateTaskEvent extends TaskEvent {

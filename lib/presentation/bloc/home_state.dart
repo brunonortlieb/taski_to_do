@@ -10,15 +10,19 @@ abstract class TaskState extends Equatable {
 class TaskLoadingState extends TaskState {}
 
 class TaskLoadedState extends TaskState {
+  final String filterQuery;
   final List<TaskEntity> allTasks;
+  final List<TaskEntity> todoTasks;
+  final List<TaskEntity> doneTasks;
   final List<TaskEntity> filteredTasks;
 
-  const TaskLoadedState({required this.allTasks, required this.filteredTasks});
-
-  List<TaskEntity> get todoTasks =>
-      allTasks.where((task) => !task.isDone).toList();
-  List<TaskEntity> get doneTasks =>
-      allTasks.where((task) => task.isDone).toList();
+  const TaskLoadedState({
+    required this.allTasks,
+    required this.todoTasks,
+    required this.doneTasks,
+    required this.filteredTasks,
+    required this.filterQuery,
+  });
 
   @override
   List<Object> get props => [allTasks, filteredTasks];

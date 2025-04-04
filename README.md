@@ -60,14 +60,12 @@ lib/
 │   └── repositories/        # Abstract repository interfaces
 ├── presentation/
 │   ├── mobx/                # MobX-based state management  
-│   │   ├── controllers/      # MobX controllers (stores)  
-│   │   └── pages/            # UI pages using MobX  
 │   ├── bloc/                # BLoC-based state management  
-│   │   ├── blocs/            # BLoCs (Business Logic Components)  
-│   │   └── pages/            # UI pages using BLoC  
-│   └── widgets/             # Reusable UI components  
+│   ├── widgets/             # Reusable UI components  
+│   └── pages/               # UI pages
 ├── app.dart                 # Main app widget  
-└── main.dart                # App entry point  
+├── main_bloc.dart           # App entry point (BLoC)
+└── main_mobx.dart           # App entry point (MobX)
 ```
 ##  Running Tests
 To execute tests, run:

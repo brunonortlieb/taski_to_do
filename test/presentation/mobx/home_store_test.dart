@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:taski_to_do/presentation/tasks/controllers/home_store.dart';
+import 'package:taski_to_do/presentation/mobx/home_store.dart';
 
-import '../../../../testing/entities/task_entity_testing.dart';
-import '../../../../testing/mocks.dart';
+import '../../../testing/entities/task_entity_testing.dart';
+import '../../../testing/mocks.dart';
 
 void main() {
   late HomeStore store;
@@ -52,7 +52,7 @@ void main() {
     test('should filter filteredTasks on search', () {
       store.allTasks.addAll([kTaskEntity]);
 
-      store.onSearch('title');
+      store.searchTasks('title');
 
       expect(store.filteredTasks.length, equals(1));
       expect(store.filteredTasks.first, equals(kTaskEntity));
@@ -64,7 +64,7 @@ void main() {
       when(() => mockRepository.deleteAllTasks(any()))
           .thenAnswer((_) async => const Success(unit));
 
-      await store.onDeleteAllTasks([task]);
+      await store.deleteAllTasks([task]);
 
       expect(store.allTasks.length, equals(1));
       expect(store.filteredTasks.length, equals(1));
@@ -76,7 +76,7 @@ void main() {
       when(() => mockRepository.updateTask(any()))
           .thenAnswer((_) async => Success(kTaskEntity.copyWith(isDone: true)));
 
-      await store.onChangeTask(kTaskEntity.copyWith(isDone: true));
+      await store.updateTask(kTaskEntity.copyWith(isDone: true));
 
       expect(store.todoTasks.isEmpty, isTrue);
       expect(store.doneTasks.length, equals(1));
@@ -89,7 +89,7 @@ void main() {
       when(() => mockRepository.deleteTask(any()))
           .thenAnswer((_) async => const Success(unit));
 
-      final result = await store.onDeleteTask(kTaskEntity);
+      final result = await store.deleteTask(kTaskEntity);
 
       expect(result.isSuccess(), isTrue);
       expect(store.todoTasks.isEmpty, isTrue);
@@ -102,7 +102,7 @@ void main() {
       when(() => mockRepository.addTask(any()))
           .thenAnswer((_) async => Success(kTaskEntity));
 
-      final result = await store.onCreateTask(kTaskEntity);
+      final result = await store.createTask(kTaskEntity);
 
       expect(result.isSuccess(), isTrue);
       expect(store.todoTasks.length, equals(1));

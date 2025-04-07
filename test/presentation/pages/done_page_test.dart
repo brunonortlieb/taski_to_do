@@ -30,8 +30,7 @@ void main() {
   }
 
   group('DonePage', () {
-    testWidgets('should show list of done tasks and delete all button',
-        (tester) async {
+    testWidgets('should show list of done tasks and delete all button', (tester) async {
       final tasks = [kTaskEntity, kTaskEntity];
       await loadScreen(tester, tasks);
 
@@ -39,16 +38,14 @@ void main() {
       expect(find.text('Delete all'), findsOneWidget);
     });
 
-    testWidgets('should show title and empty state if no done tasks',
-        (tester) async {
+    testWidgets('should show title and empty state if no done tasks', (tester) async {
       await loadScreen(tester, []);
 
       expect(find.byType(EmptyListWidget), findsOneWidget);
       expect(find.text('Delete all'), findsNothing);
     });
 
-    testWidgets('should call onDeleteAllTasks when delete all is tapped',
-        (tester) async {
+    testWidgets('should call onDeleteAllTasks when delete all is tapped', (tester) async {
       await loadScreen(tester, [kTaskEntity]);
 
       await tester.tap(find.text('Delete all'));

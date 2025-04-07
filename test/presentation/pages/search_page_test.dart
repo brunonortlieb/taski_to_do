@@ -8,8 +8,7 @@ import 'package:taski_to_do/presentation/widgets/task_widget.dart';
 import '../../../testing/entities/task_entity_testing.dart';
 
 void main() {
-  Future<void> loadScreen(
-      WidgetTester tester, List<TaskEntity> filteredTasks) async {
+  Future<void> loadScreen(WidgetTester tester, List<TaskEntity> filteredTasks) async {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
         body: SearchPage(
@@ -43,16 +42,14 @@ void main() {
       expect(find.text('text'), findsNothing);
     });
 
-    testWidgets('should display tasks when filteredTasks is not empty',
-        (tester) async {
+    testWidgets('should display tasks when filteredTasks is not empty', (tester) async {
       final tasks = [kTaskEntity, kTaskEntity];
       await loadScreen(tester, tasks);
 
       expect(find.byType(TaskWidget), findsNWidgets(tasks.length));
     });
 
-    testWidgets('should display an empty state when filteredTasks is empty',
-        (tester) async {
+    testWidgets('should display an empty state when filteredTasks is empty', (tester) async {
       await loadScreen(tester, []);
 
       expect(find.byType(EmptyListWidget), findsOneWidget);

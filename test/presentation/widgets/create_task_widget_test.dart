@@ -12,8 +12,7 @@ void main() {
   });
 
   group('CreateTaskWidget', () {
-    testWidgets('should display form fields and buttons',
-        (WidgetTester tester) async {
+    testWidgets('should display form fields and buttons', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -42,8 +41,7 @@ void main() {
       expect(find.text('What’s in your mind?'), findsOneWidget);
     });
 
-    testWidgets('should call onCreate when form is valid',
-        (WidgetTester tester) async {
+    testWidgets('should call onCreate when form is valid', (WidgetTester tester) async {
       TaskEntity? createdTask;
       mockOnCreate = (TaskEntity task) {
         createdTask = task;

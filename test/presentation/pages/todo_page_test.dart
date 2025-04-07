@@ -33,34 +33,29 @@ void main() {
   }
 
   group('TodoPage', () {
-    testWidgets('should display welcome message and tasks count',
-        (tester) async {
+    testWidgets('should display welcome message and tasks count', (tester) async {
       final tasks = [kTaskEntity, kTaskEntity];
       await loadScreen(tester, tasks);
 
       expect(find.byKey(const Key('welcomeMessage')), findsOneWidget);
-      expect(
-          find.text('You’ve got ${tasks.length} tasks to do.'), findsOneWidget);
+      expect(find.text('You’ve got ${tasks.length} tasks to do.'), findsOneWidget);
     });
 
-    testWidgets('should display an empty state when todoTasks is empty',
-        (tester) async {
+    testWidgets('should display an empty state when todoTasks is empty', (tester) async {
       await loadScreen(tester, []);
 
       expect(find.byType(EmptyListWidget), findsOneWidget);
       expect(find.text('Create tasks to achieve more.'), findsOneWidget);
     });
 
-    testWidgets('should display tasks when todoTasks is not empty',
-        (tester) async {
+    testWidgets('should display tasks when todoTasks is not empty', (tester) async {
       final tasks = [kTaskEntity, kTaskEntity];
       await loadScreen(tester, tasks);
 
       expect(find.byType(TaskWidget), findsNWidgets(tasks.length));
     });
 
-    testWidgets('should show bottom sheet when create button is pressed',
-        (tester) async {
+    testWidgets('should show bottom sheet when create button is pressed', (tester) async {
       await loadScreen(tester, []);
 
       await tester.tap(find.text('Create task'));

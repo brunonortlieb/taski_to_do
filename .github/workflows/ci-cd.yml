@@ -71,43 +71,28 @@ jobs:
             os: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: 3.27.3
-          cache: true
-
-      - name: Clean Flutter cache
-        run: flutter clean
-
-      - name: Install dependencies
-        run: flutter pub get
-
       - name: Build project (${{ matrix.platform }})
         run: |
           echo "Starting build for ${{ matrix.platform }}..."
           case "${{ matrix.platform }}" in
             android)
-              flutter build apk --release
-              flutter build appbundle --release
+              flutter build apk --release -t lib/main_bloc.dart
+              flutter build appbundle --release -t lib/main_bloc.dart
               ;;
             ios)
-              flutter build ios --release --no-codesign
+              flutter build ios --release --no-codesign -t lib/main_bloc.dart
               ;;
             web)
-              flutter build web
+              flutter build web -t lib/main_bloc.dart
               ;;
             windows)
-              flutter build windows
+              flutter build windows -t lib/main_bloc.dart
               ;;
             macos)
-              flutter build macos
+              flutter build macos -t lib/main_bloc.dart
               ;;
             linux)
-              flutter build linux
+              flutter build linux -t lib/main_bloc.dart
               ;;
             *)
               echo "Unknown platform: ${{ matrix.platform }}"

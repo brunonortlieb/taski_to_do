@@ -105,8 +105,7 @@ class _HomePageBlocState extends State<HomePageBloc> {
                   doneTasks: state.doneTasks,
                   onUpdateTask: (task) => bloc.add(UpdateTaskEvent(task)),
                   onDeleteTask: (task) => bloc.add(DeleteTaskEvent(task)),
-                  onDeleteAllTasks: (tasks) =>
-                      bloc.add(DeleteAllTaskEvent(tasks)),
+                  onDeleteAllTasks: (tasks) => bloc.add(DeleteAllTaskEvent(tasks)),
                 ),
               ],
             );

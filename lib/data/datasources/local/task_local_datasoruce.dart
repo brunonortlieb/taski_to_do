@@ -14,7 +14,7 @@ class TaskLocalDatasourceImpl extends TaskDatasource {
   }
 
   @override
-  Future<TaskModel> addTask(TaskModel task) async {
+  Future<TaskModel> createTask(TaskModel task) async {
     final box = await _hive.openBox<TaskModel>(HiveBoxes.task);
     await box.put(task.id, task);
     return task;

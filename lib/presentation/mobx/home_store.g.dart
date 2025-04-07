@@ -13,26 +13,50 @@ mixin _$HomeStore on HomePageBase, Store {
 
   @override
   List<TaskEntity> get filteredTasks => (_$filteredTasksComputed ??=
-          Computed<List<TaskEntity>>(() => super.filteredTasks,
-              name: 'HomePageBase.filteredTasks'))
+          Computed<List<TaskEntity>>(() => super.filteredTasks, name: 'HomePageBase.filteredTasks'))
       .value;
   Computed<List<TaskEntity>>? _$doneTasksComputed;
 
   @override
   List<TaskEntity> get doneTasks =>
-      (_$doneTasksComputed ??= Computed<List<TaskEntity>>(() => super.doneTasks,
-              name: 'HomePageBase.doneTasks'))
-          .value;
+      (_$doneTasksComputed ??= Computed<List<TaskEntity>>(() => super.doneTasks, name: 'HomePageBase.doneTasks')).value;
   Computed<List<TaskEntity>>? _$todoTasksComputed;
 
   @override
   List<TaskEntity> get todoTasks =>
-      (_$todoTasksComputed ??= Computed<List<TaskEntity>>(() => super.todoTasks,
-              name: 'HomePageBase.todoTasks'))
-          .value;
+      (_$todoTasksComputed ??= Computed<List<TaskEntity>>(() => super.todoTasks, name: 'HomePageBase.todoTasks')).value;
 
-  late final _$searchQueryAtom =
-      Atom(name: 'HomePageBase.searchQuery', context: context);
+  late final _$isLoadingAtom = Atom(name: 'HomePageBase.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
+  late final _$errorMessageAtom = Atom(name: 'HomePageBase.errorMessage', context: context);
+
+  @override
+  String? get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String? value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
+  late final _$searchQueryAtom = Atom(name: 'HomePageBase.searchQuery', context: context);
 
   @override
   String get searchQuery {
@@ -47,8 +71,7 @@ mixin _$HomeStore on HomePageBase, Store {
     });
   }
 
-  late final _$currentIndexAtom =
-      Atom(name: 'HomePageBase.currentIndex', context: context);
+  late final _$currentIndexAtom = Atom(name: 'HomePageBase.currentIndex', context: context);
 
   @override
   int get currentIndex {
@@ -63,8 +86,7 @@ mixin _$HomeStore on HomePageBase, Store {
     });
   }
 
-  late final _$allTasksAtom =
-      Atom(name: 'HomePageBase.allTasks', context: context);
+  late final _$allTasksAtom = Atom(name: 'HomePageBase.allTasks', context: context);
 
   @override
   ObservableList<TaskEntity> get allTasks {
@@ -79,45 +101,39 @@ mixin _$HomeStore on HomePageBase, Store {
     });
   }
 
-  late final _$deleteAllTasksAsyncAction =
-      AsyncAction('HomePageBase.deleteAllTasks', context: context);
+  late final _$deleteAllTasksAsyncAction = AsyncAction('HomePageBase.deleteAllTasks', context: context);
 
   @override
-  Future<ResultDart<Unit, Exception>> deleteAllTasks(List<TaskEntity> tasks) {
+  Future<void> deleteAllTasks(List<TaskEntity> tasks) {
     return _$deleteAllTasksAsyncAction.run(() => super.deleteAllTasks(tasks));
   }
 
-  late final _$updateTaskAsyncAction =
-      AsyncAction('HomePageBase.updateTask', context: context);
+  late final _$updateTaskAsyncAction = AsyncAction('HomePageBase.updateTask', context: context);
 
   @override
-  Future<ResultDart<TaskEntity, Exception>> updateTask(TaskEntity task) {
+  Future<void> updateTask(TaskEntity task) {
     return _$updateTaskAsyncAction.run(() => super.updateTask(task));
   }
 
-  late final _$deleteTaskAsyncAction =
-      AsyncAction('HomePageBase.deleteTask', context: context);
+  late final _$deleteTaskAsyncAction = AsyncAction('HomePageBase.deleteTask', context: context);
 
   @override
-  Future<ResultDart<Unit, Exception>> deleteTask(TaskEntity task) {
+  Future<void> deleteTask(TaskEntity task) {
     return _$deleteTaskAsyncAction.run(() => super.deleteTask(task));
   }
 
-  late final _$createTaskAsyncAction =
-      AsyncAction('HomePageBase.createTask', context: context);
+  late final _$createTaskAsyncAction = AsyncAction('HomePageBase.createTask', context: context);
 
   @override
-  Future<ResultDart<TaskEntity, Exception>> createTask(TaskEntity task) {
+  Future<void> createTask(TaskEntity task) {
     return _$createTaskAsyncAction.run(() => super.createTask(task));
   }
 
-  late final _$HomePageBaseActionController =
-      ActionController(name: 'HomePageBase', context: context);
+  late final _$HomePageBaseActionController = ActionController(name: 'HomePageBase', context: context);
 
   @override
   void setCurrentIndex(int index) {
-    final _$actionInfo = _$HomePageBaseActionController.startAction(
-        name: 'HomePageBase.setCurrentIndex');
+    final _$actionInfo = _$HomePageBaseActionController.startAction(name: 'HomePageBase.setCurrentIndex');
     try {
       return super.setCurrentIndex(index);
     } finally {
@@ -127,8 +143,7 @@ mixin _$HomeStore on HomePageBase, Store {
 
   @override
   void searchTasks(String value) {
-    final _$actionInfo = _$HomePageBaseActionController.startAction(
-        name: 'HomePageBase.searchTasks');
+    final _$actionInfo = _$HomePageBaseActionController.startAction(name: 'HomePageBase.searchTasks');
     try {
       return super.searchTasks(value);
     } finally {
@@ -139,6 +154,8 @@ mixin _$HomeStore on HomePageBase, Store {
   @override
   String toString() {
     return '''
+isLoading: ${isLoading},
+errorMessage: ${errorMessage},
 searchQuery: ${searchQuery},
 currentIndex: ${currentIndex},
 allTasks: ${allTasks},

@@ -32,11 +32,9 @@ class CreateTaskWidget extends StatelessWidget {
                   enabledBorder: InputBorder.none,
                   hintText: 'What’s in your mind?',
                   hintStyle: context.textTheme.bodyLarge,
-                  prefixIcon:
-                      const ImageIcon(AssetImage(ImageAssets.uncheckedIcon)),
+                  prefixIcon: const ImageIcon(AssetImage(ImageAssets.uncheckedIcon)),
                   prefixIconColor: context.colorScheme.onSurfaceVariant,
-                  prefixIconConstraints:
-                      const BoxConstraints(minWidth: 56, maxHeight: 24),
+                  prefixIconConstraints: const BoxConstraints(minWidth: 56, maxHeight: 24),
                 ),
               ),
               TextFormField(

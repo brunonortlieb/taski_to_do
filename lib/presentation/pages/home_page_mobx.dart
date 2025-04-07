@@ -73,42 +73,44 @@ class _HomePageState extends State<HomePageMobx> {
             onTap: _onItemTapped,
             items: [
               customNavBarItem(iconPath: ImageAssets.todoIcon, label: 'Todo'),
-              customNavBarItem(
-                  iconPath: ImageAssets.createIcon, label: 'Create'),
-              customNavBarItem(
-                  iconPath: ImageAssets.searchIcon, label: 'Search'),
+              customNavBarItem(iconPath: ImageAssets.createIcon, label: 'Create'),
+              customNavBarItem(iconPath: ImageAssets.searchIcon, label: 'Search'),
               customNavBarItem(iconPath: ImageAssets.doneIcon, label: 'Done'),
             ],
           ),
         ),
       ),
       body: Observer(
-        builder: (_) => IndexedStack(
-          index: store.currentIndex,
-          children: [
-            TodoPage(
-              todoTasks: store.todoTasks,
-              onCreateTask: store.createTask,
-              onUpdateTask: store.updateTask,
-              onDeleteTask: store.deleteTask,
-            ),
-            const SizedBox.shrink(),
-            SearchPage(
-              todoTasks: store.todoTasks,
-              filteredTasks: store.filteredTasks,
-              onCreateTask: store.createTask,
-              onUpdateTask: store.updateTask,
-              onDeleteTask: store.deleteTask,
-              onSearchTasks: store.searchTasks,
-            ),
-            DonePage(
-              doneTasks: store.doneTasks,
-              onUpdateTask: store.updateTask,
-              onDeleteTask: store.deleteTask,
-              onDeleteAllTasks: store.deleteAllTasks,
-            ),
-          ],
-        ),
+        builder: (context) {
+          if (store.isLoading) return const Center(child: CircularProgressIndicator());
+
+          return IndexedStack(
+            index: store.currentIndex,
+            children: [
+              TodoPage(
+                todoTasks: store.todoTasks,
+                onCreateTask: store.createTask,
+                onUpdateTask: store.updateTask,
+                onDeleteTask: store.deleteTask,
+              ),
+              const SizedBox.shrink(),
+              SearchPage(
+                todoTasks: store.todoTasks,
+                filteredTasks: store.filteredTasks,
+                onCreateTask: store.createTask,
+                onUpdateTask: store.updateTask,
+                onDeleteTask: store.deleteTask,
+                onSearchTasks: store.searchTasks,
+              ),
+              DonePage(
+                doneTasks: store.doneTasks,
+                onUpdateTask: store.updateTask,
+                onDeleteTask: store.deleteTask,
+                onDeleteAllTasks: store.deleteAllTasks,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

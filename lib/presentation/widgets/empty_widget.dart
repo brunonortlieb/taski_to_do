@@ -13,8 +13,7 @@ class EmptyListWidget extends StatelessWidget {
       children: [
         Image.asset(ImageAssets.empty, height: 80),
         const SizedBox(height: 24),
-        Text(
-            onCreate == null ? 'No result found.' : 'You have no task listed.'),
+        Text(onCreate == null ? 'No result found.' : 'You have no task listed.'),
         if (onCreate != null) ...[
           const SizedBox(height: 28),
           ElevatedButton.icon(

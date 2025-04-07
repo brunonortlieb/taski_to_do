@@ -21,9 +21,9 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  AsyncResult<TaskEntity> addTask(TaskEntity task) async {
+  AsyncResult<TaskEntity> createTask(TaskEntity task) async {
     try {
-      await datasource.addTask(TaskModel.fromEntity(task));
+      await datasource.createTask(TaskModel.fromEntity(task));
       return Success(task);
     } catch (e, s) {
       return Failure(CacheException('Failed to add task', s));

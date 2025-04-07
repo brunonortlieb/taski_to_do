@@ -44,8 +44,7 @@ final theme = ThemeData(
     hintStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
     contentPadding: const EdgeInsets.fromLTRB(14, 15, 14, 14),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-          color: colorScheme.primary.withValues(alpha: 0.5), width: 2),
+      borderSide: BorderSide(color: colorScheme.primary.withValues(alpha: 0.5), width: 2),
       borderRadius: const BorderRadius.all(Radius.circular(12)),
     ),
     errorBorder: OutlineInputBorder(
@@ -60,12 +59,9 @@ final theme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       elevation: const WidgetStatePropertyAll(0),
-      backgroundColor:
-          WidgetStatePropertyAll(colorScheme.primary.withValues(alpha: .1)),
-      shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-      padding: const WidgetStatePropertyAll(
-          EdgeInsets.symmetric(horizontal: 24, vertical: 22)),
+      backgroundColor: WidgetStatePropertyAll(colorScheme.primary.withValues(alpha: .1)),
+      shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+      padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 24, vertical: 22)),
       iconSize: const WidgetStatePropertyAll(13),
       overlayColor: const WidgetStatePropertyAll(Colors.transparent),
     ),

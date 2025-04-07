@@ -8,106 +8,116 @@ import '../../../testing/mocks.dart';
 
 void main() {
   late HomeStore store;
-  late MockTaskRepository mockRepository;
+  late MockGetAllTasksUseCase mockGetAllTasksUseCase;
+  late MockCreateTaskUseCase mockCreateTaskUseCase;
+  late MockUpdateTaskUseCase mockUpdateTaskUseCase;
+  late MockDeleteTaskUseCase mockDeleteTaskUseCase;
+  late MockDeleteAllTasksUseCase mockDeleteAllTasksUseCase;
 
   setUp(() {
-    mockRepository = MockTaskRepository();
-    store = HomeStore(mockRepository);
+    mockGetAllTasksUseCase = MockGetAllTasksUseCase();
+    mockCreateTaskUseCase = MockCreateTaskUseCase();
+    mockUpdateTaskUseCase = MockUpdateTaskUseCase();
+    mockDeleteTaskUseCase = MockDeleteTaskUseCase();
+    mockDeleteAllTasksUseCase = MockDeleteAllTasksUseCase();
+    store = HomeStore(
+      mockGetAllTasksUseCase,
+      mockCreateTaskUseCase,
+      mockUpdateTaskUseCase,
+      mockDeleteTaskUseCase,
+      mockDeleteAllTasksUseCase,
+    );
 
     registerFallbackValue(kTaskEntity);
   });
 
-  group('HomeStore', () {
-    test('should initialize with tasks from the repository', () async {
-      when(() => mockRepository.getAllTasks())
-          .thenAnswer((_) async => Success([kTaskEntity]));
+  test('should initialize with tasks from the repository', () async {
+    when(() => mockGetAllTasksUseCase()).thenAnswer((_) async => Success([kTaskEntity]));
 
-      await store.init();
+    await store.init();
 
-      expect(store.todoTasks.length, equals(1));
-      expect(store.todoTasks.first, equals(kTaskEntity));
-      expect(store.filteredTasks.length, equals(1));
-      expect(store.doneTasks.isEmpty, isTrue);
-      verify(() => mockRepository.getAllTasks()).called(1);
-    });
+    expect(store.todoTasks.length, equals(1));
+    expect(store.todoTasks.first, equals(kTaskEntity));
+    expect(store.filteredTasks.length, equals(1));
+    expect(store.doneTasks.isEmpty, isTrue);
+    verify(() => mockGetAllTasksUseCase()).called(1);
+    verifyNoMoreInteractions(mockGetAllTasksUseCase);
+  });
 
-    test('should handle failure when initializing tasks', () async {
-      when(() => mockRepository.getAllTasks())
-          .thenAnswer((_) async => Failure(Exception()));
+  test('should handle failure when initializing tasks', () async {
+    when(() => mockGetAllTasksUseCase()).thenAnswer((_) async => Failure(Exception()));
 
-      await store.init();
+    await store.init();
 
-      expect(store.todoTasks.isEmpty, isTrue);
-      expect(store.filteredTasks.isEmpty, isTrue);
-      expect(store.doneTasks.isEmpty, isTrue);
-      verify(() => mockRepository.getAllTasks()).called(1);
-    });
+    expect(store.todoTasks.isEmpty, isTrue);
+    expect(store.filteredTasks.isEmpty, isTrue);
+    expect(store.doneTasks.isEmpty, isTrue);
+    verify(() => mockGetAllTasksUseCase()).called(1);
+    verifyNoMoreInteractions(mockGetAllTasksUseCase);
+  });
 
-    test('should update currentIndex correctly', () {
-      store.setCurrentIndex(1);
+  test('should update currentIndex correctly', () {
+    store.setCurrentIndex(1);
 
-      expect(store.currentIndex, equals(1));
-    });
+    expect(store.currentIndex, equals(1));
+  });
 
-    test('should filter filteredTasks on search', () {
-      store.allTasks.addAll([kTaskEntity]);
+  test('should filter filteredTasks on search', () {
+    store.allTasks.addAll([kTaskEntity]);
 
-      store.searchTasks('title');
+    store.searchTasks('title');
 
-      expect(store.filteredTasks.length, equals(1));
-      expect(store.filteredTasks.first, equals(kTaskEntity));
-    });
+    expect(store.filteredTasks.length, equals(1));
+    expect(store.filteredTasks.first, equals(kTaskEntity));
+  });
 
-    test('should delete all done tasks', () async {
-      final task = kTaskEntity.copyWith(id: '11');
-      store.allTasks.addAll([task, kTaskEntity]);
-      when(() => mockRepository.deleteAllTasks(any()))
-          .thenAnswer((_) async => const Success(unit));
+  test('should delete all done tasks', () async {
+    final task = kTaskEntity.copyWith(id: '11');
+    store.allTasks.addAll([task, kTaskEntity]);
+    when(() => mockDeleteAllTasksUseCase(any())).thenAnswer((_) async => const Success(unit));
 
-      await store.deleteAllTasks([task]);
+    await store.deleteAllTasks([task]);
 
-      expect(store.allTasks.length, equals(1));
-      expect(store.filteredTasks.length, equals(1));
-      verify(() => mockRepository.deleteAllTasks(any())).called(1);
-    });
+    expect(store.allTasks.length, equals(1));
+    expect(store.filteredTasks.length, equals(1));
+    verify(() => mockDeleteAllTasksUseCase([task.id])).called(1);
+    verifyNoMoreInteractions(mockDeleteAllTasksUseCase);
+  });
 
-    test('should toggle task status and update lists', () async {
-      store.allTasks.addAll([kTaskEntity]);
-      when(() => mockRepository.updateTask(any()))
-          .thenAnswer((_) async => Success(kTaskEntity.copyWith(isDone: true)));
+  test('should toggle task status and update lists', () async {
+    store.allTasks.addAll([kTaskEntity]);
+    when(() => mockUpdateTaskUseCase(any())).thenAnswer((_) async => Success(kTaskEntity.copyWith(isDone: true)));
 
-      await store.updateTask(kTaskEntity.copyWith(isDone: true));
+    await store.updateTask(kTaskEntity.copyWith(isDone: true));
 
-      expect(store.todoTasks.isEmpty, isTrue);
-      expect(store.doneTasks.length, equals(1));
-      expect(store.filteredTasks.first.isDone, isTrue);
-      verify(() => mockRepository.updateTask(any())).called(1);
-    });
+    expect(store.todoTasks.isEmpty, isTrue);
+    expect(store.doneTasks.length, equals(1));
+    expect(store.filteredTasks.first.isDone, isTrue);
+    verify(() => mockUpdateTaskUseCase(any())).called(1);
+    verifyNoMoreInteractions(mockUpdateTaskUseCase);
+  });
 
-    test('should delete a task and update lists', () async {
-      store.allTasks.addAll([kTaskEntity]);
-      when(() => mockRepository.deleteTask(any()))
-          .thenAnswer((_) async => const Success(unit));
+  test('should delete a task and update lists', () async {
+    store.allTasks.addAll([kTaskEntity]);
+    when(() => mockDeleteTaskUseCase(any())).thenAnswer((_) async => const Success(unit));
 
-      final result = await store.deleteTask(kTaskEntity);
+    await store.deleteTask(kTaskEntity);
 
-      expect(result.isSuccess(), isTrue);
-      expect(store.todoTasks.isEmpty, isTrue);
-      expect(store.filteredTasks.isEmpty, isTrue);
-      expect(store.doneTasks.isEmpty, isTrue);
-      verify(() => mockRepository.deleteTask(any())).called(1);
-    });
+    expect(store.todoTasks.isEmpty, isTrue);
+    expect(store.filteredTasks.isEmpty, isTrue);
+    expect(store.doneTasks.isEmpty, isTrue);
+    verify(() => mockDeleteTaskUseCase(any())).called(1);
+    verifyNoMoreInteractions(mockDeleteTaskUseCase);
+  });
 
-    test('should create a new task and update lists', () async {
-      when(() => mockRepository.addTask(any()))
-          .thenAnswer((_) async => Success(kTaskEntity));
+  test('should create a new task and update lists', () async {
+    when(() => mockCreateTaskUseCase(any())).thenAnswer((_) async => Success(kTaskEntity));
 
-      final result = await store.createTask(kTaskEntity);
+    await store.createTask(kTaskEntity);
 
-      expect(result.isSuccess(), isTrue);
-      expect(store.todoTasks.length, equals(1));
-      expect(store.filteredTasks.length, equals(1));
-      verify(() => mockRepository.addTask(any())).called(1);
-    });
+    expect(store.todoTasks.length, equals(1));
+    expect(store.filteredTasks.length, equals(1));
+    verify(() => mockCreateTaskUseCase(any())).called(1);
+    verifyNoMoreInteractions(mockCreateTaskUseCase);
   });
 }

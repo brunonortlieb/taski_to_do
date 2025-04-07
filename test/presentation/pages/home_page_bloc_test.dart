@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-
 import 'package:taski_to_do/core/di/injector.dart';
-import 'package:taski_to_do/presentation/mobx/home_store.dart';
+import 'package:taski_to_do/presentation/bloc/home_bloc.dart';
 import 'package:taski_to_do/presentation/pages/done_page.dart';
-import 'package:taski_to_do/presentation/pages/home_page_mobx.dart';
+import 'package:taski_to_do/presentation/pages/home_page_bloc.dart';
 import 'package:taski_to_do/presentation/pages/search_page.dart';
 import 'package:taski_to_do/presentation/pages/todo_page.dart';
 import 'package:taski_to_do/presentation/widgets/create_task_widget.dart';
@@ -14,29 +12,27 @@ import 'package:taski_to_do/presentation/widgets/create_task_widget.dart';
 import '../../../testing/mocks.dart';
 
 void main() {
-  late MockHomeStore mockStore;
+  late MockHomeBloc mockBloc;
+  late MockTaskLoadedState mockTaskLoadedState;
 
   setUp(() {
-    mockStore = MockHomeStore();
+    mockBloc = MockHomeBloc();
+    mockTaskLoadedState = MockTaskLoadedState();
 
-    injector.replaceInstance<HomeStore>(mockStore);
+    injector.replaceInstance<HomeBloc>(mockBloc);
 
-    enableWarnWhenNoObservables = false;
-
-    when(() => mockStore.isLoading).thenReturn(false);
-    when(() => mockStore.currentIndex).thenReturn(0);
-    when(() => mockStore.todoTasks).thenReturn([]);
-    when(() => mockStore.filteredTasks).thenReturn([]);
-    when(() => mockStore.doneTasks).thenReturn([]);
-    when(() => mockStore.init()).thenAnswer((_) async {});
+    when(() => mockBloc.state).thenReturn(mockTaskLoadedState);
+    when(() => mockTaskLoadedState.todoTasks).thenReturn([]);
+    when(() => mockTaskLoadedState.filteredTasks).thenReturn([]);
+    when(() => mockTaskLoadedState.doneTasks).thenReturn([]);
   });
 
   Future<void> loadScreen(WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: HomePageMobx()));
+    await tester.pumpWidget(const MaterialApp(home: HomePageBloc()));
   }
 
   testWidgets('should display CircularProgressIndicator when state is TaskLoadingState', (tester) async {
-    when(() => mockStore.isLoading).thenReturn(true);
+    when(() => mockBloc.state).thenReturn(TaskLoadingState());
 
     await loadScreen(tester);
 
@@ -45,7 +41,6 @@ void main() {
     expect(find.byType(SearchPage), findsNothing);
     expect(find.byType(DonePage), findsNothing);
   });
-
   testWidgets('should display AppBar, BottomNavigationBar, and TodoPage when state is TaskLoadedState', (tester) async {
     await loadScreen(tester);
 
@@ -69,10 +64,7 @@ void main() {
     expect(find.byType(TodoPage), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('Search')));
-    verify(() => mockStore.setCurrentIndex(2)).called(1);
-
-    when(() => mockStore.currentIndex).thenReturn(2);
-    await tester.pumpWidget(const MaterialApp(home: HomePageMobx()));
+    await tester.pumpAndSettle();
 
     expect(find.byType(SearchPage), findsOneWidget);
     expect(find.byType(TodoPage), findsNothing);
@@ -84,10 +76,7 @@ void main() {
     expect(find.byType(TodoPage), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('Done')));
-    verify(() => mockStore.setCurrentIndex(3)).called(1);
-
-    when(() => mockStore.currentIndex).thenReturn(3);
-    await tester.pumpWidget(const MaterialApp(home: HomePageMobx()));
+    await tester.pumpAndSettle();
 
     expect(find.byType(DonePage), findsOneWidget);
     expect(find.byType(TodoPage), findsNothing);

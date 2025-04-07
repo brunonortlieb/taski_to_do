@@ -31,8 +31,7 @@ class DonePage extends StatelessWidget {
               if (doneTasks.isNotEmpty)
                 TextButton(
                   onPressed: () => onDeleteAllTasks(doneTasks),
-                  child: Text('Delete all',
-                      style: TextStyle(color: context.colorScheme.error)),
+                  child: Text('Delete all', style: TextStyle(color: context.colorScheme.error)),
                 ),
             ],
           ),

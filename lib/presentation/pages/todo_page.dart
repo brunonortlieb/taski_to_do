@@ -21,9 +21,8 @@ class TodoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tasksTodo = todoTasks.isEmpty
-        ? 'Create tasks to achieve more.'
-        : 'You’ve got ${todoTasks.length} tasks to do.';
+    final tasksTodo =
+        todoTasks.isEmpty ? 'Create tasks to achieve more.' : 'You’ve got ${todoTasks.length} tasks to do.';
 
     return Column(
       children: [
@@ -36,12 +35,10 @@ class TodoPage extends StatelessWidget {
                 key: const Key('welcomeMessage'),
                 text: TextSpan(
                   children: [
-                    TextSpan(
-                        text: 'Welcome, ', style: context.textTheme.titleLarge),
+                    TextSpan(text: 'Welcome, ', style: context.textTheme.titleLarge),
                     TextSpan(
                         text: 'Jhon',
-                        style: context.textTheme.titleLarge
-                            ?.copyWith(color: context.colorScheme.primary)),
+                        style: context.textTheme.titleLarge?.copyWith(color: context.colorScheme.primary)),
                     TextSpan(text: '.', style: context.textTheme.titleLarge),
                   ],
                 ),

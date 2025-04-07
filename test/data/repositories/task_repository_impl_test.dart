@@ -22,8 +22,7 @@ void main() {
 
   group('getAllTasks', () {
     test('Should return a [List<TaskEntity>] when succeeds', () async {
-      when(() => mockDatasource.getAllTasks())
-          .thenAnswer((_) async => [kTaskModel]);
+      when(() => mockDatasource.getAllTasks()).thenAnswer((_) async => [kTaskModel]);
 
       final result = await repository.getAllTasks();
 
@@ -32,9 +31,7 @@ void main() {
       verify(() => mockDatasource.getAllTasks()).called(1);
     });
 
-    test(
-        'Should reuturn a [CacheException] when getAllTasks throws an exception',
-        () async {
+    test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
       when(() => mockDatasource.getAllTasks()).thenThrow(Exception());
 
       final result = await repository.getAllTasks();
@@ -45,35 +42,31 @@ void main() {
     });
   });
 
-  group('addTask', () {
+  group('createTask', () {
     test('Should return a [TaskEntity] when succeeds', () async {
-      when(() => mockDatasource.addTask(any()))
-          .thenAnswer((_) async => kTaskModel);
+      when(() => mockDatasource.createTask(any())).thenAnswer((_) async => kTaskModel);
 
-      final result = await repository.addTask(kTaskEntity);
+      final result = await repository.createTask(kTaskEntity);
 
       expect(result.isSuccess(), true);
       expect(result.getOrNull(), isA<TaskEntity>());
-      verify(() => mockDatasource.addTask(any())).called(1);
+      verify(() => mockDatasource.createTask(any())).called(1);
     });
 
-    test(
-        'Should reuturn a [CacheException] when getAllTasks throws an exception',
-        () async {
-      when(() => mockDatasource.addTask(any())).thenThrow(Exception());
+    test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
+      when(() => mockDatasource.createTask(any())).thenThrow(Exception());
 
-      final result = await repository.addTask(kTaskEntity);
+      final result = await repository.createTask(kTaskEntity);
 
       expect(result.isSuccess(), false);
       expect(result.exceptionOrNull(), isA<CacheException>());
-      verify(() => mockDatasource.addTask(any())).called(1);
+      verify(() => mockDatasource.createTask(any())).called(1);
     });
   });
 
   group('updateTask', () {
     test('Should return a [TaskEntity] when succeeds', () async {
-      when(() => mockDatasource.updateTask(any()))
-          .thenAnswer((_) async => kTaskModel);
+      when(() => mockDatasource.updateTask(any())).thenAnswer((_) async => kTaskModel);
 
       final result = await repository.updateTask(kTaskEntity);
 
@@ -82,9 +75,7 @@ void main() {
       verify(() => mockDatasource.updateTask(any())).called(1);
     });
 
-    test(
-        'Should reuturn a [CacheException] when getAllTasks throws an exception',
-        () async {
+    test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
       when(() => mockDatasource.updateTask(any())).thenThrow(Exception());
 
       final result = await repository.updateTask(kTaskEntity);
@@ -106,9 +97,7 @@ void main() {
       verify(() => mockDatasource.deleteTask(any())).called(1);
     });
 
-    test(
-        'Should reuturn a [CacheException] when getAllTasks throws an exception',
-        () async {
+    test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
       when(() => mockDatasource.deleteTask(any())).thenThrow(Exception());
 
       final result = await repository.deleteTask(kTaskEntity.id);
@@ -130,9 +119,7 @@ void main() {
       verify(() => mockDatasource.deleteAllTasks(any())).called(1);
     });
 
-    test(
-        'Should reuturn a [CacheException] when getAllTasks throws an exception',
-        () async {
+    test('Should reuturn a [CacheException] when getAllTasks throws an exception', () async {
       when(() => mockDatasource.deleteAllTasks(any())).thenThrow(Exception());
 
       final result = await repository.deleteAllTasks([kTaskEntity.id]);

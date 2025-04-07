@@ -19,15 +19,14 @@ void main() {
     registerFallbackValue(kTaskModel);
 
     when(() => mockHive.registerAdapter(TaskModelAdapter())).thenAnswer((_) {});
-    when(() => mockHive.openBox<TaskModel>(any()))
-        .thenAnswer((_) async => mockBox);
+    when(() => mockHive.openBox<TaskModel>(any())).thenAnswer((_) async => mockBox);
   });
 
   group('TaskLocalDatasourceImpl', () {
     test('should add a task to the box', () async {
       when(() => mockBox.put(any(), any())).thenAnswer((_) async {});
 
-      await dataSource.addTask(kTaskModel);
+      await dataSource.createTask(kTaskModel);
 
       verify(() => mockBox.put(any(), any())).called(1);
     });
@@ -44,8 +43,7 @@ void main() {
     test('should throw a exception when task dont exists', () async {
       when(() => mockBox.containsKey(kTaskModel.id)).thenReturn(false);
 
-      expect(() async => await dataSource.updateTask(kTaskModel),
-          throwsA(isA<Exception>()));
+      expect(() async => await dataSource.updateTask(kTaskModel), throwsA(isA<Exception>()));
 
       verifyNever(() => mockBox.put(any(), any()));
     });

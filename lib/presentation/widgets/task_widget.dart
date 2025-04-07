@@ -34,11 +34,8 @@ class _TaskWidgetState extends State<TaskWidget> {
               children: [
                 IconButton(
                   key: const Key('isDnoe'),
-                  onPressed: () => widget.onChanged(
-                      widget.data.copyWith(isDone: !widget.data.isDone)),
-                  icon: ImageIcon(AssetImage(widget.data.isDone
-                      ? ImageAssets.checkIcon
-                      : ImageAssets.uncheckedIcon)),
+                  onPressed: () => widget.onChanged(widget.data.copyWith(isDone: !widget.data.isDone)),
+                  icon: ImageIcon(AssetImage(widget.data.isDone ? ImageAssets.checkIcon : ImageAssets.uncheckedIcon)),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
